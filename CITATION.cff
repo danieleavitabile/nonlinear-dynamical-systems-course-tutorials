@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use these tutorials, or take inspiration from the codes, please cite it as below."
+authors:
+- family-names: "Avitabile"
+  given-names: "Daniele"
+  orcid: "https://orcid.org/0000-0003-3714-7973"
+title: "Tutorials for Nonlinear Dynamical Systems - Part 3"
+version: 0.0.1
+date-released: 2022-11-17
+doi: 10.5281/zenodo.7330169
+url: "https://github.com/danieleavitabile/nonlinear-dynamical-systems-course-tutorials"
+
+
