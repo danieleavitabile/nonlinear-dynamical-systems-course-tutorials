@@ -4,7 +4,7 @@ This repository contains tutorials for the course Nonlinear Dynamical Systems, t
 
 The tutorials cover Part 3 of the course, which gives elements of pattern formation in parabolic PDEs. The course is aimed to 3rd year mathematics students who have followed an introductory courses on Dynamical Systems and Numerical Analysis, have little background on PDEs, and no background in Functional Analysis. Hence its emphasis is on parallels/contrasts with ODEs, formal analysis, and numerics.
 
-The tutorials, which are aimed for a 3 4-week course, build slowly and cover the basics of numerical bifurcation analysis and pattern formation. Students are expected to self-study, which is why solutions and code is distributed upfront. 
+The tutorials, which are aimed for a 3 4-week course, build slowly and cover the basics of numerical bifurcation analysis and pattern formation. Students are expected to self-study, which is why solutions and code are distributed upfront. 
 
 1. Go to the `Tutorial1` folder, which contains links to files in the `src` folder (no need to enter this folder yet). 
 1. Open `Tutorial1/tutorial-01.pdf` and start working: make a brand new folder on your computer for Tutorial 1, and populate it with your own code (keep solutions on a side).
