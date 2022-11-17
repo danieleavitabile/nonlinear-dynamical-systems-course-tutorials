@@ -22,6 +22,19 @@ The tutorials, which are aimed for a 3 4-week course, build slowly and cover the
 
 You are welcome to send me pull requests if you correct errors in the tutorial questions or solutions: all sources, including the LaTeX files for the questions are in the `src/` directory, so you can modify them too (you'll be acknowledged on the tutorials).
 
-I am keen to make a Julia and Python version of the solutions, so do not hesitate to contact me if you want to help.
+I am keen to include Julia and Python versions of the solutions, so do not hesitate to contact me if you want to help.
 
+## Citation
+If you use ideas or code from these tutorials, please cite them as follows
 
+```
+@software{Tutorials_for_Nonl_Dyn_Sys_2022,
+  author = {Avitabile, Daniele},
+  doi = {10.5281/zenodo.7330169},
+  month = {11},
+  title = {{Tutorials for Nonlinear Dynamical Systems - Part 3}},
+  url = {https://github.com/danieleavitabile/nonlinear-dynamical-systems-course-tutorials},
+  version = {0.0.1},
+  year = {2022}
+}
+```
