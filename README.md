@@ -9,7 +9,7 @@ The tutorials cover Part 3 of the course, which gives elements of pattern format
 The tutorials, which are aimed for a 3 4-week course, build slowly and cover the basics of numerical bifurcation analysis and pattern formation. Students are expected to self-study, which is why solutions and code are distributed upfront. 
 
 ## For the impatients
-* To have a peek at the tutorial's content, open `Tutorial1/tutorial-01.pdf` and `Tutorial1/solutions-01-code.html`, and similar.
+* To have a peek at the tutorial's content, open `Tutorial1/tutorial-01.pdf` and `Tutorial1/solutions-01-code.html`, or similar.
 * A more advanced tutorial, aimed at postgraduate students, can be found [here](https://zenodo.org/record/3821169#.Y3X94S8w0gw) 
 
 ## Getting started
