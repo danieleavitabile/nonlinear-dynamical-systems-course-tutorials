@@ -4,7 +4,7 @@
 
 This repository contains tutorials for the course Nonlinear Dynamical Systems, taught at Vrije Universiteit Amsterdam.
 
-The tutorials cover Part 3 of the course, which gives elements of pattern formation in parabolic PDEs. The course is aimed to 3rd year mathematics students who have followed an introductory courses on Dynamical Systems and Numerical Analysis, have little background on PDEs, and no background in Functional Analysis. Hence its emphasis is on parallels/contrasts with ODEs, formal analysis, and numerics.
+The tutorials cover Part 3 of the course, which gives elements of pattern formation in parabolic PDEs. The course is aimed at 3rd year mathematics students who have followed an introductory courses on Dynamical Systems and Numerical Analysis, have little background on PDEs, and no background in Functional Analysis. Hence its emphasis is on parallels/contrasts with ODEs, formal analysis, and numerics.
 
 The tutorials, which are aimed for a 3 4-week course, build slowly and cover the basics of numerical bifurcation analysis and pattern formation. Students are expected to self-study, which is why solutions and code are distributed upfront. 
 
