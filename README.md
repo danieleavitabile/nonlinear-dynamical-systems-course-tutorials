@@ -6,7 +6,7 @@ The tutorials cover Part 3 of the course, which gives elements of pattern format
 
 The tutorials, which are aimed for a 3 4-week course, build slowly and cover the basics of numerical bifurcation analysis and pattern formation. Students are expected to self-study, which is why solutions and code are distributed upfront. 
 
-1. Go to the `Tutorial1` folder, which contains links to files in the `src` folder (no need to enter this folder yet). 
+1. Go to the `Tutorial1` folder, which contains links to files in the `src` folder (no need to enter the latter folder yet). 
 1. Open `Tutorial1/tutorial-01.pdf` and start working: make a brand new folder on your computer for Tutorial 1, and populate it with your own code (keep solutions on a side).
 1. Solutions to Tutorial 1 are available to you in an html file, so you can click on `Tutorial1/solutions-01-code.html` and browse at once code and generated graphs. Some questions are answered with pen and paper, and solutions are in `Tutorial1/solutions-01-analysis.pdf`.
 1. You should be able to progress even if you get stuck on a question try to get some tips from the html file.
