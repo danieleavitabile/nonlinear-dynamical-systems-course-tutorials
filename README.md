@@ -28,7 +28,7 @@ I am keen to include Julia and Python versions of the solutions, so do not hesit
 If you use ideas or code from these tutorials, please cite them as follows
 
 ```
-@software{Tutorials_for_Nonl_Dyn_Sys_2022,
+@software{Avitabile_Tutorials_Nonlin_Dyn_Sys_2022,
   author = {Avitabile, Daniele},
   doi = {10.5281/zenodo.7330169},
   month = {11},
