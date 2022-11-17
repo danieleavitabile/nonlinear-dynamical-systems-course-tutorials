@@ -1,0 +1,293 @@
+\documentclass[a4paper]{siamart220329}
+
+\usepackage{damacros}
+
+% Theorem environment for questions: Small-caps header, italize body.
+\theoremstyle{plain}
+% \theoremheaderfont{\normalfont\sc}
+\theoremheaderfont{\normalfont\bf}
+\theorembodyfont{\normalfont}
+\theoremseparator{.}
+\theoremsymbol{}
+\newtheorem{question}{Question}
+\crefname{question}{Question}{Questions}
+\Crefname{question}{Question}{Questions}
+\renewcommand{\phi}{\varphi}
+
+\usepackage{listings}
+\definecolor{LightGrey}{rgb}{0.9629411,0.9629411,0.9629411}
+\definecolor{LighterGrey}{gray}{0.99}
+\definecolor{Mauve}{rgb}{0.58,0,0.82}
+\definecolor{Emerald}{rgb}{0.31, 0.78, 0.47}
+\definecolor{RoyalBlue}{rgb}{0.25, 0.41, 0.88}
+\definecolor{myGreen}{cmyk}{0.82,0.11,1,0.25}
+\lstset{
+    language=Matlab,
+    keywordstyle=\color{RoyalBlue},
+    basicstyle=\ttfamily,
+    morekeywords={define,ifndef,endif},
+    commentstyle=\color{myGreen}\small\ttfamily,
+    %directivestyle=\color{Mauve}\scriptsize\ttfamily,
+    showspaces=false,            
+    showstringspaces=false,
+    stringstyle=\color{Mauve}\ttfamily,
+    numbers=left,
+    numberstyle=\scriptsize,
+    stepnumber=1,
+    numbersep=8pt,
+    showstringspaces=false,
+    breaklines=true,
+    frameround=ftff,
+    frame=lines,
+    backgroundcolor=\color{LightGrey}
+} 
+% \usepackage{xr}
+% \externaldocument[T1-]{../../../Week1/Tutorial/Questions/tutorial-01}
+
+% Sets running headers as well as PDF title and authors
+\headers{Tutorial 2}{D. Avitabile}
+
+% Title. If the supplement option is on, then "Supplementary Material"
+% is automatically inserted before the title.
+\title{Nonlinear Dynamical Systems Part 3 \\ 
+  Dynamics in pattern-forming systems \\
+  Tutorial 3
+} 
+
+% Authors: full names plus addresses.
+\author{%
+  Daniele Avitabile%
+  \thanks{%
+    Vrije Universiteit Amsterdam,
+    Department of Mathematics,
+    Faculteit der Exacte Wetenschappen,
+    De Boelelaan 1081a,
+    1081 HV Amsterdam, The Netherlands.
+  \protect\\
+    Inria Sophia Antipolis M\'editerran\'ee Research Centre,
+    MathNeuro Team,
+    2004 route des Lucioles-Boîte Postale 93 06902,
+    Sophia Antipolis, Cedex, France.
+  \protect\\
+    (\email{d.avitabile@vu.nl}, \url{www.danieleavitabile.com}).
+  }
+ % \and
+%   Paul T. Frank \thanks{Department of Applied Mathematics, Fictional University, Boise, ID 
+% (\email{ptfrank@fictional.edu}, \email{jesmith@fictional.edu}).}
+% \and Jane E. Smith\footnotemark[3]
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+  Themes of this tutorial:
+  \begin{enumerate}
+    \item Working with systems of PDEs
+    \item Determining dispersion relations
+    \item Determining Hopf and Turing bifurcations
+    \item Predicting wavelengths and/or temporal periods of patterns near Hopf and
+      Turing bifurcations.
+  \end{enumerate}
+\end{abstract}
+
+\section{Introduction}
+  Let us consider the following system of PDEs, known as the Schnakenberg model,
+  \begin{equation}\label{eq:Sch}
+    \begin{aligned}
+      & \partial_t u =   \partial_x^2 u - u + u^2 v, 
+	&& (x,t) \in \RSet/ 2L \ZSet \times \RSet_{>0}, \\
+      & \partial_t v = d \partial_x^2 v + b - u^2v,
+	&& (x,t) \in \RSet/ 2L \ZSet \times \RSet_{>0}.\\
+    \end{aligned}
+  \end{equation} 
+  where $d,b \in \RSet_{>0}$. By writing $x \in \RSet / 2L \ZSet$ we compactly state that we are interested in
+  $2L$-periodic functions: we can consider the equation posed on $[-L,L)$, or
+  $[0,2L)$, or $[nL,(n+2)L)$ with $n \in \ZSet$, subject to
+  \textit{periodic boundary conditions} (PBCs). Initial conditions to the problem
+  will be specified in due course.
+
+\begin{question}[Homogeneous steady state]\label{ques:HSS}
+  Show that  for any $d,b >0$ system \cref{eq:Sch} admits a unique homogeneous
+  equilibrium $(u_*,v_*)$, independent of $d$. Express $(u_*,v_*)$ in terms of $b$.
+\end{question}
+
+\begin{question}[Linearisation]
+  Show that small perturbations $\varphi = (\tilde u, \tilde v)$ around $(u_*,v_*)$ evolve
+  according to a linear PDE
+  \begin{equation}\label{eq:linear}
+    \partial_t \phi = \calL(u_*,v_*) \phi, 
+    \qquad \text{or, in extended form,} \qquad
+    \partial_t 
+  \begin{pmatrix} \tilde u \\ \tilde v \end{pmatrix} 
+  = \calL(u_*,v_*)
+  \begin{pmatrix} \tilde u \\ \tilde v \end{pmatrix} 
+  ,\end{equation} 
+  and, using the result in \cref{ques:HSS}, express $\calL$ in terms of $b$ and $d$. 
+  %Henceforth, with a small abuse of notation, we shall use
+  %$\calL(u_*,v_*)$ and $\calL(b,d)$ interchangeably.
+\end{question}
+
+\begin{question}[Dispersion relation]\label{ques:eigenvals}
+  Let us study perturbations to the homogeneous equilibrium disregarding
+  boundary conditions. Loosely speaking, one way to achieve that is to think of the
+  problem \cref{eq:Sch} with $x \in \RSet$ as opposed to $ x \in \RSet/2L\ZSet$. Show
+  that the linear problem \cref{eq:linear}, posed on $\RSet$ admits solutions in the
+  form 
+  \[
+    \phi(x,t) = \psi \exp(\lambda t + ik x) + \overline{\psi \exp(\lambda t + i k x)}, \qquad \psi \in \CSet^2,
+  \] 
+  where the overbar denotes complex conjugation, provided $\lambda, b, d, k$ satisfy
+  the dispersion relation
+  \begin{equation} \label{eq:dispersion}
+    \lambda^2 - \tau(k,b,d)\lambda + \Delta(k,b,d) = 0,
+  \end{equation}
+  where $\tau$ and $\Delta$ are trace and determinant of the matrix
+  \[
+    M(k,b,d) = 
+    \begin{pmatrix} 1-k^2 && b^2 \\ -2 && -dk^2 - b^2 \end{pmatrix},
+  \]
+  respectively, and $(\lambda,\psi)$ is an eigenpair of $M(k,b,d)$.
+\end{question}
+
+\begin{question}[Curves of eigenvalues] \label{question:lambdaCurves}
+  As we have seen in the lectures, we
+  investigate linear stability of the homogeneous steady states as follows: let
+  $(u_*,v_*)$ be a homogeneous steady state of \cref{eq:Sch} posed on $x \in \RSet$ for $(b,d) = (b_*,d_*)$ and
+  let $\gamma_{1,2}$ be the curves of eigenvalues
+  \[
+    \gamma_{1,2} \colon \RSet \to \CSet, \qquad k \mapsto \lambda_{1,2}(k,b_*,d_*).
+  \] 
+  It is sometimes useful to omit the dependence on the parameters $(b_*,d_*)$, and
+  use $\lambda_{1,2}(k)$ and $\gamma_{1,2}(k)$ interchangeably. The steady state
+  $(u_*,v_*)$ is linearly stable if  $\real \gamma_{1,2}(k) <0$, that is, if the
+  eigenvalues $\lambda_{1,2}(k)$ obtained for fixed $(b_*,d_*)$ have negative real
+  parts for all wavelengths $k \in \RSet$.
+
+  Prove that that the homogeneous steady state $(u_*, v_*) \equiv (3,1/3)$ to
+  \cref{eq:Sch} posed on $\RSet$ is linearly stable for $(b_*,d_*) = (3,1)$.
+
+\end{question}
+\begin{question}[Plot eigenvalues]\label{ques:plot} 
+  Write code that, for fixed value $(b_*,d_*)$, plots graphs of the curves
+  \[
+  \real \gamma_1(k), \qquad \imag \gamma_1(k), \qquad \real \gamma_2(k), \qquad \imag
+  \gamma_2(k),
+  \] 
+  and test the code by verifying the analytical prediction of
+  \cref{question:lambdaCurves}.
+\end{question}
+
+\begin{question}[Periodic Boundary conditions] 
+  As in any system of PDEs, boundary conditions have an impact on the problem.
+  Discuss with a colleague the following argument, and fill the gaps where necessary.
+  %(note that we do not expect you to produce a proof, but a formal argument will
+  %suffice).
+
+  Let us consider problem \cref{eq:Sch}, which has now the correct periodic boundary
+  conditions, and consider the linearised problem
+  \begin{equation}\label{eq:linearBCs}
+    \partial_t \phi(x,t) = \calL(u_*,v_*) \phi(x,t), \qquad
+	(x,t) \in \RSet/ 2L \ZSet \times \RSet_{>0}, 
+  \end{equation} 
+  Small perturbations $\phi = (\tilde u, \tilde v)$ to a homogeneous
+  steady state $(u_*,v_*)$ of \cref{eq:Sch} with $(b,d) = (b_*,d_*)$ can be written
+  \[
+    \phi(x,t) = \sum_{j \in \ZSet}  \psi_j \exp (\lambda_{j} t + i k_j x) +
+    \overline{\psi_j \exp (\lambda_j t + i k_j x)}
+  \]
+  where
+  \[
+  k_j = j \frac{\pi}{L}, \qquad \lambda_j^2 - \tau(k_j,b_*,d_*) \lambda_j +
+  \Delta(k_j,b_*,d_*) = 0, \qquad j \in \ZSet.
+\] 
+You may assume, without proof, that the series above converges to $\phi$.
+\end{question}
+
+\begin{question}[Hopf bifurcation]\label{ques:Hopf}
+  Using the code in \cref{ques:plot}, show that the steady state $(u_*,v_*)
+  = (0.99,1/99)$ is linearly unstable when $(b_*,d_*) = (0.99,1)$. With these data,
+  argue that $(u_*,v_*)$ is close to a Hopf bifurcation. What is the spatial
+  wavelength and/or temporal period of the emerging pattern?
+\end{question}
+
+\begin{question}[Hopf bifurcation]\label{ques:HopfTimeStep}
+  Produce numerical evidence in support of your predictions in \cref{ques:Hopf}. One
+  way to do this is to perform a time simulation of \cref{eq:Sch} for $(b_*,d_*)$
+  fixed as in \cref{ques:Hopf}, and with initial condition $(u(x,0),v(x,0)) =
+  (u_*,v_*) + ( \tilde u(x), \tilde v(x))$, for ``small" $(\tilde u, \tilde v)$. The
+  analysis in \cref{ques:Hopf} can not determine whether the bifurcation is sub- or
+  super-critical. However, if it is supercritical, simulations should show a pattern
+  with features predicted by the eigenvalues and eigenfunctions determined in
+  \cref{ques:Hopf}.
+
+  Using a suitable differentiation matrix $D_{xx}$ (see Tutorials 1 and 2),
+  discretise \cref{eq:Sch} as a set of ODEs of the type
+  \[
+  \begin{pmatrix} \dot U \\ \dot V \end{pmatrix} 
+  = 
+  \begin{pmatrix} D_{x x} && 0 \\ 0 && d D_{xx}\end{pmatrix} 
+  \begin{pmatrix}  U \\  V \end{pmatrix}  + 
+  \begin{pmatrix}  f(U,V) \\  g(U,V,b) \end{pmatrix},\] 
+where $U, V \in \RSet^n$, $D_{xx} \in \RSet^{n \times n}$, 
+\begin{equation}\label{eq:discretised}
+  \begin{aligned}
+  & f \colon \RSet^n \times \RSet^n \to \RSet^n, 
+    && ( f(U,V) )_i = -u_i + u_i^2 v_i, && i = 1,\ldots,n, \\
+  & g \colon \RSet^n \times \RSet^n \times \RSet_{\geq 0} \to \RSet^n, 
+    && ( g(U,V,b))_i = b- u_i^2 v_i, && i = 1,\ldots,n.
+  \end{aligned}
+\end{equation}
+%
+Time step the problem using $1501$ evenly distributed grid points $\{ x_j \} \subset
+[-L,L]$ with $L=30$, and periodic boundary conditions and initial condition
+\[
+  \begin{pmatrix} u(x,0) \\ v(x,0) \end{pmatrix} = 
+  \begin{pmatrix} u_* \\ v_* \end{pmatrix} +
+  0.01
+  \begin{pmatrix} \sin(\pi x/5) \\ \sin(\pi x/10) \end{pmatrix}.
+\]
+
+The time stepper \lstinline|ode15s| or \lstinline|ode23s| will perform better if you
+pass not only the right-hand side
+of \cref{eq:discretised}, but also its Jacobian with respect to $(U,V)$ (this is done
+by passing the option \lstinline|'Jacobian'| to the time stepper, via Matlab's command \lstinline|odeset|).
+\end{question}
+
+Produce numerical evidence that the model exhibits a pattern compatible with your
+analysis in \cref{ques:Hopf}, and in particular that the period of the emerging
+oscillations approximates the one predicted by your analysis. Note that the analysis
+predicts the period of the spatially continuous problem, whereas the numerical
+simulation timesteps an approximation to this system with $n=1501$ grid points, hence
+you should expect some discrepancy between the predicted and the observed period.
+
+\begin{question}[Turing bifurcation]\label{ques:Turing}
+  Using the code in \cref{ques:plot}, show that the steady state $(u_*,v_*)
+  = (2,1/2)$ is linearly unstable when $(b_*,d_*) = (2,30)$. With these data,
+  argue that $(u_*,v_*)$ is close to a Turing bifurcation. What are the wavelengths
+  of the unstable modes when $L=30$? Which wavelength would you expect to observe in a
+  time simulation with $L=30$?
+\end{question}
+
+\begin{question}[Turing bifurcation simulation]\label{ques:TuringTimeStep}
+Produce numerical evidence that the model exhibits a pattern compatible with your
+analysis in \cref{ques:Turing}, and in particular that the wavelength of the emerging
+pattern matches the one predicted by your analysis. Use an initial condition of the
+type
+\[
+  \begin{pmatrix} u(x,0) \\ v(x,0) \end{pmatrix} = 
+  \begin{pmatrix} u_* \\ v_* \end{pmatrix} +
+  \eps
+  \begin{pmatrix} \xi(x) \\ \eta(x) \end{pmatrix},
+\]
+where $\xi(x)$ and $\eta(x)$ should also be selected using information from
+\cref{ques:Turing}. Some fiddling with $\eps$ may be necessary to see the pattern.
+
+\end{question}
+
+
+
+% \bibliographystyle{siamplain}
+% \bibliography{references}
+\end{document}

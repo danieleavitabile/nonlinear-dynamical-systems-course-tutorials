@@ -1,0 +1,522 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>driver</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-11-16"><meta name="DC.source" content="driver.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1></h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Question 1</a></li><li><a href="#2">Question 2</a></li><li><a href="#3">Question 3</a></li><li><a href="#4">Question 4</a></li><li><a href="#5">Question 6</a></li><li><a href="#6">Question 7</a></li><li><a href="#7">Question 8</a></li><li><a href="#8">Question 9</a></li><li><a href="#9">Question 10</a></li><li><a href="#10">Question 11</a></li><li><a href="#11">Question 12</a></li><li><a href="#12">Question 13</a></li></ul></div><h2 id="1">Question 1</h2><pre class="codeinput"><span class="comment">% Clear</span>
+clear <span class="string">all</span>, close <span class="string">all</span>, clc
+
+<span class="comment">% Instantiating periodic differentiation matrix</span>
+[x,Dx,Dxx] = PeriodicDiffMat([-pi,pi],100);
+
+<span class="comment">% Analytic function handles for testing matrices</span>
+uAna = @(x) exp(cos(x));
+uxAna = @(x) -sin(x).*exp(cos(x));
+uxxAna = @(x) (sin(x).^2-cos(x)).*exp(cos(x));
+
+<span class="comment">% Approximate first and second derivative of u</span>
+u = uAna(x);
+ux = Dx*u;
+uxx = Dxx*u;
+
+<span class="comment">% Graphical test ("eyeball")</span>
+figure;
+subplot(3,2,[1 2]);
+plot(x,uAna(x),<span class="string">'-'</span>,x,u,<span class="string">'.'</span>);
+xlabel(<span class="string">'x'</span>); legend({<span class="string">'u'</span>,<span class="string">'u approx'</span>});
+
+subplot(3,2,[3 4]);
+plot(x,uxAna(x),<span class="string">'-'</span>,x,ux,<span class="string">'.'</span>);
+xlabel(<span class="string">'x'</span>); legend({<span class="string">'ux'</span>,<span class="string">'ux approx'</span>});
+
+subplot(3,2,[5 6]);
+plot(x,uxxAna(x),<span class="string">'-'</span>,x,uxx,<span class="string">'.'</span>);
+xlabel(<span class="string">'x'</span>); legend({<span class="string">'uxx'</span>,<span class="string">'uxx approx'</span>});
+</pre><img vspace="5" hspace="5" src="driver_01.png" alt=""> <h2 id="2">Question 2</h2><pre class="codeinput"><span class="comment">% Test that inf-norm error is O(hx^2). For each value of nx</span>
+nxVals = 10:10:100;
+errValsDx  = zeros(size(nxVals));
+errValsDxx = zeros(size(nxVals));
+
+<span class="keyword">for</span> i = 1:length(nxVals)
+
+  <span class="comment">% Get number of gridpoints</span>
+  nx = nxVals(i);
+
+  <span class="comment">% Instantiate the grid and differentiation matrices</span>
+  [x,Dx,Dxx] = PeriodicDiffMat([-pi,pi],nx);
+
+  <span class="comment">% Compute errors (approximating the infinity norm)</span>
+  u = uAna(x);
+  errValsDx(i) = max( abs(uxAna(x) - Dx*u) );
+  errValsDxx(i) = max( abs(uxxAna(x) - Dxx*u) );
+
+<span class="keyword">end</span>
+
+<span class="comment">% Plot errors and O(n^-2) function</span>
+figure;
+loglog(nxVals,errValsDx,<span class="string">'.-'</span>,nxVals,errValsDxx,<span class="string">'.-'</span>,nxVals,nxVals.^(-2),<span class="string">'-'</span>);
+xlabel(<span class="string">'n'</span>); legend({<span class="string">'Error ux'</span>,<span class="string">'Error uxx'</span>,<span class="string">'1/n^2'</span>});
+</pre><img vspace="5" hspace="5" src="driver_02.png" alt=""> <h2 id="3">Question 3</h2><pre class="codeinput"><span class="comment">% Instantiating differentiation matrix with null first derivative at the boundaries</span>
+[x,Dx,Dxx] = NeumannDiffMat([-5,5],100);
+
+<span class="comment">% Analytic function handles for testing matrices</span>
+uAna = @(x) x.^3/3 - 25*x;
+uxAna = @(x) x.^2 - 25;
+vAna = @(x) cos(2*pi/10 * x);
+vxxAna = @(x) -(2*pi/10)^2*cos(2*pi/10 * x);
+
+<span class="comment">% Approximate first and second derivatives</span>
+u = uAna(x); v = vAna(x);
+ux = Dx*u; vxx = Dxx*v;
+
+<span class="comment">% Graphical test ("eyeball")</span>
+figure;
+subplot(2,2,[1 2]);
+plot(x,uxAna(x),<span class="string">'-'</span>,x,ux,<span class="string">'.'</span>);
+xlabel(<span class="string">'x'</span>); legend({<span class="string">'u_x'</span>,<span class="string">'u_x approx'</span>});
+
+subplot(2,2,[3 4]);
+plot(x,vxxAna(x),<span class="string">'-'</span>,x,vxx,<span class="string">'.'</span>);
+xlabel(<span class="string">'x'</span>); legend({<span class="string">'v_xx'</span>,<span class="string">'v_xx approx'</span>});
+</pre><img vspace="5" hspace="5" src="driver_03.png" alt=""> <h2 id="4">Question 4</h2><pre class="codeinput"><span class="comment">% Test that inf-norm error is O(hx^2). For each value of nx</span>
+nxVals = 10:10:100;
+errValsDx  = zeros(size(nxVals));
+errValsDxx = zeros(size(nxVals));
+
+<span class="keyword">for</span> i = 1:length(nxVals)
+
+  <span class="comment">% Get number of gridpoints</span>
+  nx = nxVals(i);
+
+  <span class="comment">% Instantiate the grid and differentiation matrices</span>
+  [x,Dx,Dxx] = NeumannDiffMat([-5,5],nx);
+
+  <span class="comment">% Compute errors (approximating the infinity norm)</span>
+  u = uAna(x); v = vAna(x);
+  errValsDx(i) = max( abs(uxAna(x) - Dx*u) );
+  errValsDxx(i) = max( abs(vxxAna(x) - Dxx*v) );
+
+<span class="keyword">end</span>
+
+<span class="comment">% Plot errors and O(n^-2) function</span>
+figure;
+loglog(nxVals,errValsDx,<span class="string">'.-'</span>,nxVals,errValsDxx,<span class="string">'.-'</span>,nxVals,nxVals.^(-2),<span class="string">'-'</span>);
+xlabel(<span class="string">'n'</span>); legend({<span class="string">'Error ux'</span>,<span class="string">'Error uxx'</span>,<span class="string">'1/n^2'</span>});
+</pre><img vspace="5" hspace="5" src="driver_04.png" alt=""> <h2 id="5">Question 6</h2><p>See AllenCahn.m</p><h2 id="6">Question 7</h2><pre class="codeinput"><span class="comment">% Setup problem</span>
+nx = 100;
+[x,~,Dxx] = NeumannDiffMat([-5,5],nx);
+
+<span class="comment">% Parameters [nu lambda alpha beta gamma]</span>
+p = [1; -0.2; 0; 1; 1];
+
+<span class="comment">% Analytical function and function evaluation</span>
+uAna =  @(x) cos(2*pi/10 * x);
+FAna = @(x) -p(1)*(2*pi/10)^2*cos(2*pi/10 * x) + p(2)* uAna(x) + p(3) *uAna(x).^2 + p(4)*uAna(x).^3 -p(5)*uAna(x).^5;
+
+<span class="comment">% Approximation of F(u)</span>
+u = uAna(x);
+F = AllenCahn(u,p,Dxx);
+
+<span class="comment">% Plot of the error</span>
+figure;
+plot(x,abs(F-FAna(x)),<span class="string">'.-'</span>); xlabel(<span class="string">'x'</span>); ylabel(<span class="string">'Error'</span>);
+
+disp([<span class="string">'Inf-norm Error for F(u(x)) = '</span> num2str(max(abs(F-FAna(x))))]);
+</pre><pre class="codeoutput">Inf-norm Error for F(u(x)) = 0.0001325
+</pre><img vspace="5" hspace="5" src="driver_05.png" alt=""> <h2 id="7">Question 8</h2><p>When <img src="driver_eq15408949631813978437.png" alt="$\lambda = -0.2$"> the trivial steady state <img src="driver_eq15226249455764623283.png" alt="$u(x,t) \equiv 0$"> is a stable equilibrium</p><pre class="codeinput">nx = 100;
+[x,~,Dxx] = NeumannDiffMat([-5,5],nx);
+
+<span class="comment">% Parameters [nu lambda alpha beta gamma]</span>
+p = [1; -0.2; 0; 1; 1];
+
+<span class="comment">% Initial condition</span>
+u0 = 1./cosh(x).^2;
+
+<span class="comment">% Right-Hand side casted as a function of (t,u)</span>
+rhs = @(t,u) AllenCahn(u,p,Dxx);
+
+<span class="comment">% Timestep</span>
+tSpan = [0 50];
+[t,UHist] = ode15s(rhs,tSpan,u0);
+
+<span class="comment">% Plot</span>
+[X,T] = meshgrid(x,t);
+figure; surf(X,T,UHist); shading <span class="string">interp</span>;
+xlabel(<span class="string">'x'</span>); ylabel(<span class="string">'t'</span>); zlabel(<span class="string">'u'</span>);
+</pre><img vspace="5" hspace="5" src="driver_06.png" alt=""> <h2 id="8">Question 9</h2><p>When <img src="driver_eq06010697920582702384.png" alt="$\lambda = 0.1$"> the homogeneous steady state <img src="driver_eq12990474875985111056.png" alt="$u(x,t) \equiv C$"> is a stable equilibrium. When <img src="driver_eq07657233533591063549.png" alt="$\lambda$"> changes, we attain a different homogeneous equilibrium than before</p><pre class="codeinput"><span class="comment">% Time step with lambda = 0.1</span>
+p = [1; 0.1; 0; 1; 1];
+u0 = 1./cosh(x).^2;
+rhs = @(t,u) AllenCahn(u,p,Dxx);
+tSpan = [0 50];
+[t,UHist] = ode15s(rhs,tSpan,u0);
+
+<span class="comment">% Plot</span>
+[X,T] = meshgrid(x,t);
+figure; surf(X,T,UHist); shading <span class="string">interp</span>;
+xlabel(<span class="string">'x'</span>); ylabel(<span class="string">'t'</span>); zlabel(<span class="string">'u'</span>);
+</pre><img vspace="5" hspace="5" src="driver_07.png" alt=""> <h2 id="9">Question 10</h2><pre class="codeinput"><span class="comment">% Time step with different parameters</span>
+p = [1; 0.3; 0; 1; 1];
+u0 = 0.4*cos(2*pi/10*x);
+rhs = @(t,u) AllenCahn(u,p,Dxx);
+tSpan = [0 100];
+[t,UHist1] = ode15s(rhs,tSpan,u0);
+[X,T] = meshgrid(x,t);
+figure; surf(X,T,UHist1); shading <span class="string">interp</span>;
+xlabel(<span class="string">'x'</span>); ylabel(<span class="string">'t'</span>); zlabel(<span class="string">'u'</span>);
+
+<span class="comment">% Change initial conditions</span>
+u0 = 0.2*cos(2*pi/10*x);
+[t,UHist2] = ode15s(rhs,tSpan,u0);
+[X,T] = meshgrid(x,t);
+figure; surf(X,T,UHist2); shading <span class="string">interp</span>;
+xlabel(<span class="string">'x'</span>); ylabel(<span class="string">'t'</span>); zlabel(<span class="string">'u'</span>);
+
+<span class="comment">% Plot final states</span>
+figure;
+plot(x,UHist1(end,:)',x,UHist2(end,:)');
+xlabel(<span class="string">'x'</span>); ylabel(<span class="string">'u(x,T)'</span>);
+legend({<span class="string">'final state for initial condition 1'</span>,<span class="string">'final state for initial condition 2'</span>});
+</pre><img vspace="5" hspace="5" src="driver_08.png" alt=""> <img vspace="5" hspace="5" src="driver_09.png" alt=""> <img vspace="5" hspace="5" src="driver_10.png" alt=""> <h2 id="10">Question 11</h2><p>Test <img src="driver_eq11809360406450963432.png" alt="$L^2$"> norm function on the spatial profile <img src="driver_eq12832752247015242980.png" alt="$u(x)\equiv -1$">, which has <img src="driver_eq11809360406450963432.png" alt="$L^2$"> norm equal to <img src="driver_eq18395870634560867587.png" alt="$1$"></p><pre class="codeinput">ComputeL2Norm(-ones(size(x)),x)
+</pre><pre class="codeoutput">
+ans =
+
+    1.0000
+
+</pre><h2 id="11">Question 12</h2><p>I can see 3 solution branches: one with <img src="driver_eq04687148519819866033.png" alt="$C=0$">, one with <img src="driver_eq00349898217126676384.png" alt="$C&gt;0$"> and one with <img src="driver_eq13584313781862039972.png" alt="$C<0$">. This number is not set in stone, some people may do more work, determine stability, and decide to count as separate branches the stable and unstable solution branches (so they would get 6 branches in this case).</p><p>One can guess that there is a pitchfork bifurcation of the <img src="driver_eq04687148519819866033.png" alt="$C=0$"> state, and 2 saddle-node bifurcations, one on the branch for <img src="driver_eq00349898217126676384.png" alt="$C&gt;0$">, and one on the branch for <img src="driver_eq00349898217126676384.png" alt="$C&gt;0$">. This is only a guess because we have no information about the stability of the states, as solutions to PDEs.</p><pre class="codeinput">bd = figure();
+fimplicit( @(lam,u) lam.*u + u.^3 - u.^5,[-0.5 1 -1.5 1.5]);
+xlabel(<span class="string">'lambda'</span>); ylabel(<span class="string">'L2-norm'</span>);
+</pre><img vspace="5" hspace="5" src="driver_11.png" alt=""> <h2 id="12">Question 13</h2><pre class="codeinput">lambdaVals = [0.7 -0.4];
+l2NormVals = zeros(size(lambdaVals));
+
+<span class="comment">% For each value of lambda</span>
+<span class="keyword">for</span> i = 1:length(lambdaVals)
+
+  <span class="comment">% Set parameters and timestep</span>
+  p = [1; lambdaVals(i); 0; 1; 1];
+  u0 = 1./cosh(x).^2;
+  rhs = @(t,u) AllenCahn(u,p,Dxx);
+  tSpan = [0 50];
+  [t,UHist] = ode15s(rhs,tSpan,u0);
+  uFinal = UHist(end,:)';
+
+  <span class="comment">% Compute and display l2 norm of final state</span>
+  l2NormVals(i) = ComputeL2Norm(uFinal,x);
+
+<span class="keyword">end</span>
+figure(bd); hold <span class="string">on</span>; plot(lambdaVals,l2NormVals,<span class="string">'*'</span>); hold <span class="string">off</span>;
+</pre><img vspace="5" hspace="5" src="driver_12.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+
+%% Question 1
+
+% Clear
+clear all, close all, clc
+
+% Instantiating periodic differentiation matrix
+[x,Dx,Dxx] = PeriodicDiffMat([-pi,pi],100);
+
+% Analytic function handles for testing matrices
+uAna = @(x) exp(cos(x));
+uxAna = @(x) -sin(x).*exp(cos(x));
+uxxAna = @(x) (sin(x).^2-cos(x)).*exp(cos(x));
+
+% Approximate first and second derivative of u
+u = uAna(x);
+ux = Dx*u;
+uxx = Dxx*u;
+
+% Graphical test ("eyeball")
+figure;
+subplot(3,2,[1 2]); 
+plot(x,uAna(x),'-',x,u,'.'); 
+xlabel('x'); legend({'u','u approx'});
+
+subplot(3,2,[3 4]); 
+plot(x,uxAna(x),'-',x,ux,'.'); 
+xlabel('x'); legend({'ux','ux approx'});
+
+subplot(3,2,[5 6]); 
+plot(x,uxxAna(x),'-',x,uxx,'.'); 
+xlabel('x'); legend({'uxx','uxx approx'});
+
+%% Question 2
+
+% Test that inf-norm error is O(hx^2). For each value of nx
+nxVals = 10:10:100;
+errValsDx  = zeros(size(nxVals));
+errValsDxx = zeros(size(nxVals));
+
+for i = 1:length(nxVals)
+
+  % Get number of gridpoints
+  nx = nxVals(i);
+
+  % Instantiate the grid and differentiation matrices
+  [x,Dx,Dxx] = PeriodicDiffMat([-pi,pi],nx);
+
+  % Compute errors (approximating the infinity norm)
+  u = uAna(x);
+  errValsDx(i) = max( abs(uxAna(x) - Dx*u) );
+  errValsDxx(i) = max( abs(uxxAna(x) - Dxx*u) );
+
+end 
+
+% Plot errors and O(n^-2) function
+figure;
+loglog(nxVals,errValsDx,'.-',nxVals,errValsDxx,'.-',nxVals,nxVals.^(-2),'-');
+xlabel('n'); legend({'Error ux','Error uxx','1/n^2'});
+
+%% Question 3
+
+% Instantiating differentiation matrix with null first derivative at the boundaries
+[x,Dx,Dxx] = NeumannDiffMat([-5,5],100);
+
+% Analytic function handles for testing matrices
+uAna = @(x) x.^3/3 - 25*x;
+uxAna = @(x) x.^2 - 25;
+vAna = @(x) cos(2*pi/10 * x);
+vxxAna = @(x) -(2*pi/10)^2*cos(2*pi/10 * x);
+
+% Approximate first and second derivatives
+u = uAna(x); v = vAna(x);
+ux = Dx*u; vxx = Dxx*v;
+
+% Graphical test ("eyeball")
+figure;
+subplot(2,2,[1 2]); 
+plot(x,uxAna(x),'-',x,ux,'.'); 
+xlabel('x'); legend({'u_x','u_x approx'});
+
+subplot(2,2,[3 4]); 
+plot(x,vxxAna(x),'-',x,vxx,'.'); 
+xlabel('x'); legend({'v_xx','v_xx approx'});
+
+%% Question 4
+
+% Test that inf-norm error is O(hx^2). For each value of nx
+nxVals = 10:10:100;
+errValsDx  = zeros(size(nxVals));
+errValsDxx = zeros(size(nxVals));
+
+for i = 1:length(nxVals)
+
+  % Get number of gridpoints
+  nx = nxVals(i);
+
+  % Instantiate the grid and differentiation matrices
+  [x,Dx,Dxx] = NeumannDiffMat([-5,5],nx);
+
+  % Compute errors (approximating the infinity norm)
+  u = uAna(x); v = vAna(x); 
+  errValsDx(i) = max( abs(uxAna(x) - Dx*u) );
+  errValsDxx(i) = max( abs(vxxAna(x) - Dxx*v) );
+
+end 
+
+% Plot errors and O(n^-2) function
+figure;
+loglog(nxVals,errValsDx,'.-',nxVals,errValsDxx,'.-',nxVals,nxVals.^(-2),'-');
+xlabel('n'); legend({'Error ux','Error uxx','1/n^2'});
+
+%% Question 6
+% See AllenCahn.m
+
+%% Question 7
+
+% Setup problem
+nx = 100;
+[x,~,Dxx] = NeumannDiffMat([-5,5],nx);
+
+% Parameters [nu lambda alpha beta gamma]
+p = [1; -0.2; 0; 1; 1];
+
+% Analytical function and function evaluation
+uAna =  @(x) cos(2*pi/10 * x);
+FAna = @(x) -p(1)*(2*pi/10)^2*cos(2*pi/10 * x) + p(2)* uAna(x) + p(3) *uAna(x).^2 + p(4)*uAna(x).^3 -p(5)*uAna(x).^5;
+
+% Approximation of F(u)
+u = uAna(x);
+F = AllenCahn(u,p,Dxx);
+
+% Plot of the error
+figure; 
+plot(x,abs(F-FAna(x)),'.-'); xlabel('x'); ylabel('Error');
+
+disp(['Inf-norm Error for F(u(x)) = ' num2str(max(abs(F-FAna(x))))]);
+
+%%  Question 8
+% When $\lambda = -0.2$ the trivial steady state $u(x,t) \equiv 0$ is a stable equilibrium
+
+nx = 100;
+[x,~,Dxx] = NeumannDiffMat([-5,5],nx);
+
+% Parameters [nu lambda alpha beta gamma]
+p = [1; -0.2; 0; 1; 1];
+
+% Initial condition
+u0 = 1./cosh(x).^2;
+
+% Right-Hand side casted as a function of (t,u)
+rhs = @(t,u) AllenCahn(u,p,Dxx);
+
+% Timestep
+tSpan = [0 50];
+[t,UHist] = ode15s(rhs,tSpan,u0);
+
+% Plot
+[X,T] = meshgrid(x,t);
+figure; surf(X,T,UHist); shading interp;
+xlabel('x'); ylabel('t'); zlabel('u');
+
+
+%%  Question 9
+% When $\lambda = 0.1$ the homogeneous steady state $u(x,t) \equiv C$ is a stable
+% equilibrium. When $\lambda$ changes, we attain a different homogeneous equilibrium
+% than before
+
+% Time step with lambda = 0.1
+p = [1; 0.1; 0; 1; 1];
+u0 = 1./cosh(x).^2;
+rhs = @(t,u) AllenCahn(u,p,Dxx);
+tSpan = [0 50];
+[t,UHist] = ode15s(rhs,tSpan,u0);
+
+% Plot
+[X,T] = meshgrid(x,t);
+figure; surf(X,T,UHist); shading interp;
+xlabel('x'); ylabel('t'); zlabel('u');
+
+%%  Question 10
+
+% Time step with different parameters
+p = [1; 0.3; 0; 1; 1];
+u0 = 0.4*cos(2*pi/10*x);
+rhs = @(t,u) AllenCahn(u,p,Dxx);
+tSpan = [0 100];
+[t,UHist1] = ode15s(rhs,tSpan,u0);
+[X,T] = meshgrid(x,t);
+figure; surf(X,T,UHist1); shading interp;
+xlabel('x'); ylabel('t'); zlabel('u');
+
+% Change initial conditions
+u0 = 0.2*cos(2*pi/10*x);
+[t,UHist2] = ode15s(rhs,tSpan,u0);
+[X,T] = meshgrid(x,t);
+figure; surf(X,T,UHist2); shading interp;
+xlabel('x'); ylabel('t'); zlabel('u');
+
+% Plot final states
+figure;
+plot(x,UHist1(end,:)',x,UHist2(end,:)');
+xlabel('x'); ylabel('u(x,T)'); 
+legend({'final state for initial condition 1','final state for initial condition 2'});
+
+%% Question 11
+% Test $L^2$ norm function on the spatial profile $u(x)\equiv -1$, which has
+% $L^2$ norm equal to $1$
+
+ComputeL2Norm(-ones(size(x)),x)
+
+%% Question 12
+% I can see 3 solution branches: one with $C=0$, one with $C>0$ and one with $C<0$. 
+% This number is not set in stone, some people may do more work, determine stability,
+% and decide to count as separate branches the stable and unstable solution branches
+% (so they would get 6 branches in this case).
+%
+% One can guess that there is a pitchfork bifurcation of the $C=0$ state, and 2
+% saddle-node bifurcations, one on the branch for $C>0$, and one on the branch for
+% $C>0$. This is only a guess because we have no information about the stability of
+% the states, as solutions to PDEs.
+
+bd = figure();
+fimplicit( @(lam,u) lam.*u + u.^3 - u.^5,[-0.5 1 -1.5 1.5]);
+xlabel('lambda'); ylabel('L2-norm');
+
+%% Question 13
+lambdaVals = [0.7 -0.4];
+l2NormVals = zeros(size(lambdaVals));
+
+% For each value of lambda
+for i = 1:length(lambdaVals) 
+
+  % Set parameters and timestep
+  p = [1; lambdaVals(i); 0; 1; 1];
+  u0 = 1./cosh(x).^2;
+  rhs = @(t,u) AllenCahn(u,p,Dxx);
+  tSpan = [0 50];
+  [t,UHist] = ode15s(rhs,tSpan,u0);
+  uFinal = UHist(end,:)';
+
+  % Compute and display l2 norm of final state
+  l2NormVals(i) = ComputeL2Norm(uFinal,x);
+
+end
+figure(bd); hold on; plot(lambdaVals,l2NormVals,'*'); hold off;
+
+
+##### SOURCE END #####
+--></body></html>

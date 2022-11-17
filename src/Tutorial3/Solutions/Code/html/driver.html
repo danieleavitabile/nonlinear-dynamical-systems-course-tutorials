@@ -1,0 +1,391 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Questions 1-4</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-11-16"><meta name="DC.source" content="driver.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Questions 1-4</h1><!--introduction--><p>See attached pdf</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Question 5</a></li><li><a href="#2">Question 6</a></li><li><a href="#3">Question 7</a></li><li><a href="#5">Question 9</a></li><li><a href="#6">Question 10</a></li></ul></div><h2 id="1">Question 5</h2><p>We plot the curves for the real and imaginary parts of <img src="driver_eq11032161634401115468.png" alt="$\gamma_{1,2}(k)$">, when <img src="driver_eq00423720840983613514.png" alt="$b_* = 2$">, <img src="driver_eq03925761627459690544.png" alt="$d_* = 1$">. From the plot we see that the eigenvalues are purely real, that the dispersion curve has a maximum at <img src="driver_eq17398102134707384461.png" alt="$k=0$">, and that the real part of the eigenvalue is always negative, confirming that the steady state is linearly stable. It can be verified that the the curves for real parts of the eigenvalues are given by the parabola found in the answer to Question 4.</p><pre class="codeinput"><span class="comment">% Clearm</span>
+clear <span class="string">all</span>, close <span class="string">all</span>, clc
+
+<span class="comment">% Trace, determinant, and eigenvaalues function handles</span>
+tau  = @(b,d,k) -(1+d)*k.^2+ (1-b^2);
+delta = @(b,d,k) d*k.^4+(b^2-d)*k.^2 + b^2;
+lambda1 = @(b,d,k) (tau(b,d,k)-sqrt(tau(b,d,k).^2 - 4*delta(b,d,k)))/2;
+lambda2 = @(b,d,k) (tau(b,d,k)+sqrt(tau(b,d,k).^2 - 4*delta(b,d,k)))/2;
+
+rel1 = @(b,d,k) real(lambda1(b,d,k));
+rel2 = @(b,d,k) real(lambda2(b,d,k));
+imag1 = @(b,d,k) imag(lambda1(b,d,k));
+imag2 = @(b,d,k) imag(lambda2(b,d,k));
+
+<span class="comment">% Set parameters for Hopf bifurcation</span>
+p = [2 1]; b = p(1); d = p(2);
+
+<span class="comment">% Continuous variable k</span>
+k = linspace(-2,2,1000);
+
+<span class="comment">% Plot dispersion relation (with inset around k=0);</span>
+figure, hold <span class="string">on</span>;
+plot(k,rel1(b,d,k),<span class="string">'DisplayName'</span>,<span class="string">'Re \lambda_1'</span>);             plot(k,rel2(b,d,k),<span class="string">'DisplayName'</span>,<span class="string">'Re \lambda_2'</span>);
+plot(k,imag1(b,d,k),<span class="string">'DisplayName'</span>,<span class="string">'Im \lambda_1'</span>);            plot(k,imag2(b,d,k),<span class="string">'DisplayName'</span>,<span class="string">'Im \lambda_2'</span>);
+hold <span class="string">off</span>; grid <span class="string">on</span>; ylim([-4 4]); xlabel(<span class="string">'k'</span>);
+lgd = legend; lgd.Location = <span class="string">'northoutside'</span>; lgd.NumColumns = 3;
+drawnow;
+</pre><img vspace="5" hspace="5" src="driver_01.png" alt=""> <h2 id="2">Question 6</h2><p>See attached pdf</p><h2 id="3">Question 7</h2><p>For these parameter values the steady state is unstable to perturbations with <img src="driver_eq17398102134707384461.png" alt="$k=0$">. We show also an inset of the plot, from which we see that the state is close to a Hopf bifurcation</p><pre class="codeinput"><span class="comment">% Set parameters for Hopf bifurcation</span>
+p = [0.99 1]; b = p(1); d = p(2);
+
+<span class="comment">% Vector for the real variable k</span>
+k = linspace(-2,2,1000); L = 30; kn = [-19:19]*pi/L;
+
+<span class="comment">% Plot dispersion relation (with inset around k=0);</span>
+figure;
+subplot(1,2,1), hold <span class="string">on</span>;
+plot(k,rel1(b,d,k),<span class="string">'DisplayName'</span>,<span class="string">'Re \lambda_1'</span>);             plot(k,rel2(b,d,k),<span class="string">'DisplayName'</span>,<span class="string">'Re \lambda_2'</span>);
+plot(k,imag1(b,d,k),<span class="string">'DisplayName'</span>,<span class="string">'Im \lambda_1'</span>);            plot(k,imag2(b,d,k),<span class="string">'DisplayName'</span>,<span class="string">'Im \lambda_2'</span>);
+plot(kn,rel1(b,d,kn),<span class="string">'.'</span>,<span class="string">'DisplayName'</span>,<span class="string">'Re \lambda_1(k_n)'</span>);  plot(kn,rel2(b,d,kn),<span class="string">'.'</span>,<span class="string">'DisplayName'</span>,<span class="string">'Re \lambda_2(k_n)'</span>);
+plot(kn,imag1(b,d,kn),<span class="string">'.'</span>,<span class="string">'DisplayName'</span>,<span class="string">'Im \lambda_1(k_n)'</span>); plot(kn,imag2(b,d,kn),<span class="string">'.'</span>,<span class="string">'DisplayName'</span>,<span class="string">'Im \lambda_2(k_n)'</span>);
+hold <span class="string">off</span>; grid <span class="string">on</span>; ylim([-4 4]); xlabel(<span class="string">'k'</span>);
+lgd = legend; lgd.Location = <span class="string">'northoutside'</span>; lgd.NumColumns = 3;
+
+subplot(1,2,2), hold <span class="string">on</span>;
+plot(k,rel1(b,d,k),<span class="string">'DisplayName'</span>,<span class="string">'Re \lambda_1'</span>);             plot(k,rel2(b,d,k),<span class="string">'DisplayName'</span>,<span class="string">'Re \lambda_2'</span>);
+plot(k,imag1(b,d,k),<span class="string">'DisplayName'</span>,<span class="string">'Im \lambda_1'</span>);            plot(k,imag2(b,d,k),<span class="string">'DisplayName'</span>,<span class="string">'Im \lambda_2'</span>);
+plot(kn,rel1(b,d,kn),<span class="string">'.'</span>,<span class="string">'DisplayName'</span>,<span class="string">'Re \lambda_1(k_n)'</span>);  plot(kn,rel2(b,d,kn),<span class="string">'.'</span>,<span class="string">'DisplayName'</span>,<span class="string">'Re \lambda_2(k_n)'</span>);
+plot(kn,imag1(b,d,kn),<span class="string">'.'</span>,<span class="string">'DisplayName'</span>,<span class="string">'Im \lambda_1(k_n)'</span>); plot(kn,imag2(b,d,kn),<span class="string">'.'</span>,<span class="string">'DisplayName'</span>,<span class="string">'Im \lambda_2(k_n)'</span>);
+hold <span class="string">off</span>; grid <span class="string">on</span>; xlim([-0.1 0.1]); ylim([-0.5 1.5]); xlabel(<span class="string">'k'</span>);
+lgd = legend; lgd.Location = <span class="string">'northoutside'</span>; lgd.NumColumns = 3;
+
+<span class="comment">% Instantiating periodic differentiation matrix</span>
+nx = 1500; [x,~,Dxx] = PeriodicDiffMat([-L,L],nx);
+
+<span class="comment">% Initial condition (steady state + perburbation)</span>
+e = ones(size(x)); z0 = [p(1)*e; e/p(1)];
+z0 = z0 + 0.01*[sin(2*pi/10*x); sin(2*pi/20*x)];
+
+<span class="comment">% Time step</span>
+rhs = @(t,z) Schnakenberg(z,p,Dxx);
+jac = @(t,z) SchnakenbergJacobian(z,p,Dxx);
+opts = odeset(<span class="string">'Jacobian'</span>,jac);
+tSpan = [0:0.1:300];
+[t,ZHist] = ode15s(rhs,tSpan,z0,opts);
+
+<span class="comment">% Space-time plot</span>
+PlotHistory(x,t,ZHist,p,[]);
+</pre><img vspace="5" hspace="5" src="driver_02.png" alt=""> <img vspace="5" hspace="5" src="driver_03.png" alt=""> <p>We display the most unstable eigenvalue <img src="driver_eq09023708664061589415.png" alt="$\lambda = \mu \pm i \omega$">, at <img src="driver_eq17398102134707384461.png" alt="$k=0$">, and approximate the period of the emerging periodic solution using the formula <img src="driver_eq08965921513083897366.png" alt="$T = 2\pi/\omega$">. We then run a simulation for <img src="driver_eq00084620761167863474.png" alt="$t \in [0,10T]$">. There are various ways to extract the period of the oscillations. Here we extract and plot <img src="driver_eq03273056883023546181.png" alt="$u(0,t)$">. Rather than using the peaks of <img src="driver_eq03273056883023546181.png" alt="$u(0,t)$">, we pproximate the periods using the peaks of the autocorrelation function which is also <img src="driver_eq14047577632175690031.png" alt="$T$">-periodic, but more robust.</p><pre class="codeinput"><span class="comment">% Fetch eigenvalue</span>
+lambdaC = lambda1(b,d,0); omegaC = abs(imag(lambdaC)); T = 2*pi/omegaC;
+fprintf(<span class="string">'Parameters: b = %f, d = %f\n'</span>,p(1),p(2));
+fprintf(<span class="string">'Critical eigenvalue: lambda = %f + %fi\n'</span>,real(lambdaC),imag(lambdaC));
+fprintf(<span class="string">'Predicted frequency: omega = %f\n'</span>,omegaC);
+fprintf(<span class="string">'Predicted period: T = %f\n'</span>,T);
+
+<span class="comment">% Perform a simulation for 10 periods.</span>
+dt = 0.001;
+tSpan = [0:dt:10*T];
+[t,ZHist] = ode15s(rhs,tSpan,ZHist(end,:)',opts);
+
+<span class="comment">% Plot u at x=0, as a function of $t$.</span>
+uHist = ZHist(:,nHalf);
+figure; nHalf = nx/2; plot(t,uHist,<span class="string">'.-'</span>);
+xlabel(<span class="string">'t'</span>); ylabel(<span class="string">'u(0,t)'</span>);
+
+<span class="comment">% Use autocorrelation to extract the period (other was are also possible)</span>
+autocorr = xcorr(uHist,uHist);
+[~,locs] = findpeaks(uHist);
+TSim = mean(diff(locs)*dt);
+fprintf(<span class="string">'Estimated period from simulation: T = %f\n'</span>,TSim);
+</pre><pre class="codeoutput">Parameters: b = 0.990000, d = 1.000000
+Critical eigenvalue: lambda = 0.009950 + -0.989950i
+Predicted frequency: omega = 0.989950
+Predicted period: T = 6.346972
+</pre><pre class="codeoutput error">Unrecognized function or variable 'nHalf'.
+
+Error in driver (line 110)
+uHist = ZHist(:,nHalf);
+</pre><h2 id="5">Question 9</h2><p>We now show the curves of eigenvalues. In addition to the eigenvalues as functions of <img src="driver_eq15636846968047188835.png" alt="$k$">, we also plot the curves as functions of the discrete wavenumbers <img src="driver_eq12602640019626639111.png" alt="$k_n = n\pi/30$">. The steady states is unstable to perturbations with wavelengths <img src="driver_eq02587060529552644779.png" alt="$k_{5,6,7}$">. The most unstable eigenmode has wavelength <img src="driver_eq06585225916848294143.png" alt="$k_6 = 6 \pi/L = \pi/5$">.</p><pre class="codeinput"><span class="comment">% Set parameters for Turing bifurcation</span>
+p = [2 30]; b = p(1); d = p(2);
+
+<span class="comment">% Continuous and discrete wavenumbers</span>
+k = linspace(-2,2,1000); L = 30; kn = [-19:19]*pi/L;
+
+<span class="comment">% Plot dispersion relation (with inset around k=0);</span>
+figure;
+subplot(1,2,1), hold <span class="string">on</span>;
+plot(k,rel1(b,d,k),<span class="string">'DisplayName'</span>,<span class="string">'Re \lambda_1'</span>);             plot(k,rel2(b,d,k),<span class="string">'DisplayName'</span>,<span class="string">'Re \lambda_2'</span>);
+plot(k,imag1(b,d,k),<span class="string">'DisplayName'</span>,<span class="string">'Im \lambda_1'</span>);            plot(k,imag2(b,d,k),<span class="string">'DisplayName'</span>,<span class="string">'Im \lambda_2'</span>);
+plot(kn,rel1(b,d,kn),<span class="string">'.'</span>,<span class="string">'DisplayName'</span>,<span class="string">'Re \lambda_1(k_n)'</span>);  plot(kn,rel2(b,d,kn),<span class="string">'.'</span>,<span class="string">'DisplayName'</span>,<span class="string">'Re \lambda_2(k_n)'</span>);
+plot(kn,imag1(b,d,kn),<span class="string">'.'</span>,<span class="string">'DisplayName'</span>,<span class="string">'Im \lambda_1(k_n)'</span>); plot(kn,imag2(b,d,kn),<span class="string">'.'</span>,<span class="string">'DisplayName'</span>,<span class="string">'Im \lambda_2(k_n)'</span>);
+hold <span class="string">off</span>; grid <span class="string">on</span>; ylim([-4 4]); xlabel(<span class="string">'k'</span>);
+lgd = legend; lgd.Location = <span class="string">'northoutside'</span>; lgd.NumColumns = 3;
+
+subplot(1,2,2), hold <span class="string">on</span>;
+plot(k,rel1(b,d,k),<span class="string">'DisplayName'</span>,<span class="string">'Re \lambda_1'</span>);             plot(k,rel2(b,d,k),<span class="string">'DisplayName'</span>,<span class="string">'Re \lambda_2'</span>);
+plot(k,imag1(b,d,k),<span class="string">'DisplayName'</span>,<span class="string">'Im \lambda_1'</span>);            plot(k,imag2(b,d,k),<span class="string">'DisplayName'</span>,<span class="string">'Im \lambda_2'</span>);
+plot(kn,rel1(b,d,kn),<span class="string">'.'</span>,<span class="string">'DisplayName'</span>,<span class="string">'Re \lambda_1(k_n)'</span>);  plot(kn,rel2(b,d,kn),<span class="string">'.'</span>,<span class="string">'DisplayName'</span>,<span class="string">'Re \lambda_2(k_n)'</span>);
+plot(kn,imag1(b,d,kn),<span class="string">'.'</span>,<span class="string">'DisplayName'</span>,<span class="string">'Im \lambda_1(k_n)'</span>); plot(kn,imag2(b,d,kn),<span class="string">'.'</span>,<span class="string">'DisplayName'</span>,<span class="string">'Im \lambda_2(k_n)'</span>);
+hold <span class="string">off</span>; grid <span class="string">on</span>; xlim([-1 1]); ylim([-1.5 1.5]); xlabel(<span class="string">'k'</span>);
+lgd = legend; lgd.Location = <span class="string">'northoutside'</span>; lgd.NumColumns = 3;
+</pre><h2 id="6">Question 10</h2><p>Perturbing initial conditions with a spatially-periodic function with wavelength $ <img src="driver_eq05330387868427372211.png" alt="$6*\pi/L$">, we obseve a Turing pattern emerging with <img src="driver_eq01663736040536833074.png" alt="$6$"> peaks, as expected.</p><pre class="codeinput"><span class="comment">% Instantiating periodic differentiation matrix</span>
+nx = 1500; [x,~,Dxx] = PeriodicDiffMat([-L,L],nx);
+
+<span class="comment">% Initial condition (steady state + perburbation)</span>
+e = ones(size(x)); z0 = [p(1)*e; e/p(1)];
+<span class="comment">% z0 = z0 + 0.01*[sin(2*pi/10*x); sin(2*pi/20*x)];</span>
+z0 = z0 + 0.0001*[cos(6*pi/L*x); cos(6*pi/L*x)];
+
+<span class="comment">% Time step</span>
+rhs = @(t,z) Schnakenberg(z,p,Dxx);
+jac = @(t,z) SchnakenbergJacobian(z,p,Dxx);
+opts = odeset(<span class="string">'Jacobian'</span>,jac);
+tSpan = [0:0.1:300];
+[t,ZHist] = ode15s(rhs,tSpan,z0,opts);
+
+<span class="comment">% Space-time plot</span>
+PlotHistory(x,t,ZHist,p,[]);
+
+<span class="comment">% Plot final state</span>
+figure; title(<span class="string">'Final state'</span>);
+plot(x,ZHist(end,1:nx),x,ZHist(end,nx+1:2*nx));
+xlabel(<span class="string">'x'</span>); legend({<span class="string">'U'</span>,<span class="string">'V'</span>});
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Questions 1-4
+% See attached pdf
+
+%% Question 5
+% We plot the curves for the real and imaginary parts of $\gamma_{1,2}(k)$, when 
+% $b_* = 2$, $d_* = 1$. From the plot we see that the eigenvalues are purely real,
+% that the dispersion curve has a maximum at $k=0$, and that the real part of the
+% eigenvalue is always negative, confirming that the steady state is linearly stable.
+% It can be verified that the the curves for real parts of the eigenvalues are given
+% by the parabola found in the answer to Question 4.
+
+% Clearm
+clear all, close all, clc
+
+% Trace, determinant, and eigenvaalues function handles
+tau  = @(b,d,k) -(1+d)*k.^2+ (1-b^2);
+delta = @(b,d,k) d*k.^4+(b^2-d)*k.^2 + b^2;
+lambda1 = @(b,d,k) (tau(b,d,k)-sqrt(tau(b,d,k).^2 - 4*delta(b,d,k)))/2; 
+lambda2 = @(b,d,k) (tau(b,d,k)+sqrt(tau(b,d,k).^2 - 4*delta(b,d,k)))/2; 
+
+rel1 = @(b,d,k) real(lambda1(b,d,k));
+rel2 = @(b,d,k) real(lambda2(b,d,k));
+imag1 = @(b,d,k) imag(lambda1(b,d,k));
+imag2 = @(b,d,k) imag(lambda2(b,d,k));
+
+% Set parameters for Hopf bifurcation
+p = [2 1]; b = p(1); d = p(2); 
+
+% Continuous variable k
+k = linspace(-2,2,1000);
+
+% Plot dispersion relation (with inset around k=0);
+figure, hold on;
+plot(k,rel1(b,d,k),'DisplayName','Re \lambda_1');             plot(k,rel2(b,d,k),'DisplayName','Re \lambda_2');
+plot(k,imag1(b,d,k),'DisplayName','Im \lambda_1');            plot(k,imag2(b,d,k),'DisplayName','Im \lambda_2');
+hold off; grid on; ylim([-4 4]); xlabel('k'); 
+lgd = legend; lgd.Location = 'northoutside'; lgd.NumColumns = 3;
+drawnow;
+
+%% Question 6 
+% See attached pdf
+
+%% Question 7
+% For these parameter values the steady state is unstable to perturbations with
+% $k=0$. We show also an inset of the plot, from which we see that the state is close
+% to a Hopf bifurcation
+
+% Set parameters for Hopf bifurcation
+p = [0.99 1]; b = p(1); d = p(2); 
+
+% Vector for the real variable k
+k = linspace(-2,2,1000); L = 30; kn = [-19:19]*pi/L;
+
+% Plot dispersion relation (with inset around k=0);
+figure;
+subplot(1,2,1), hold on;
+plot(k,rel1(b,d,k),'DisplayName','Re \lambda_1');             plot(k,rel2(b,d,k),'DisplayName','Re \lambda_2');
+plot(k,imag1(b,d,k),'DisplayName','Im \lambda_1');            plot(k,imag2(b,d,k),'DisplayName','Im \lambda_2');
+plot(kn,rel1(b,d,kn),'.','DisplayName','Re \lambda_1(k_n)');  plot(kn,rel2(b,d,kn),'.','DisplayName','Re \lambda_2(k_n)');
+plot(kn,imag1(b,d,kn),'.','DisplayName','Im \lambda_1(k_n)'); plot(kn,imag2(b,d,kn),'.','DisplayName','Im \lambda_2(k_n)'); 
+hold off; grid on; ylim([-4 4]); xlabel('k'); 
+lgd = legend; lgd.Location = 'northoutside'; lgd.NumColumns = 3;
+
+subplot(1,2,2), hold on; 
+plot(k,rel1(b,d,k),'DisplayName','Re \lambda_1');             plot(k,rel2(b,d,k),'DisplayName','Re \lambda_2');
+plot(k,imag1(b,d,k),'DisplayName','Im \lambda_1');            plot(k,imag2(b,d,k),'DisplayName','Im \lambda_2');
+plot(kn,rel1(b,d,kn),'.','DisplayName','Re \lambda_1(k_n)');  plot(kn,rel2(b,d,kn),'.','DisplayName','Re \lambda_2(k_n)');
+plot(kn,imag1(b,d,kn),'.','DisplayName','Im \lambda_1(k_n)'); plot(kn,imag2(b,d,kn),'.','DisplayName','Im \lambda_2(k_n)'); 
+hold off; grid on; xlim([-0.1 0.1]); ylim([-0.5 1.5]); xlabel('k'); 
+lgd = legend; lgd.Location = 'northoutside'; lgd.NumColumns = 3;
+ 
+% Instantiating periodic differentiation matrix
+nx = 1500; [x,~,Dxx] = PeriodicDiffMat([-L,L],nx); 
+
+% Initial condition (steady state + perburbation)
+e = ones(size(x)); z0 = [p(1)*e; e/p(1)]; 
+z0 = z0 + 0.01*[sin(2*pi/10*x); sin(2*pi/20*x)];
+
+% Time step
+rhs = @(t,z) Schnakenberg(z,p,Dxx);
+jac = @(t,z) SchnakenbergJacobian(z,p,Dxx);
+opts = odeset('Jacobian',jac);
+tSpan = [0:0.1:300];
+[t,ZHist] = ode15s(rhs,tSpan,z0,opts);
+
+% Space-time plot
+PlotHistory(x,t,ZHist,p,[]);
+
+%% 
+% We display the most unstable eigenvalue $\lambda = \mu \pm i \omega$, at $k=0$, and approximate the period of
+% the emerging periodic solution using the formula $T = 2\pi/\omega$. We then run a
+% simulation for $t \in [0,10T]$. There are various ways to extract the period of the
+% oscillations. Here we extract and plot $u(0,t)$. Rather than using the peaks of
+% $u(0,t)$, we pproximate the periods using the peaks of the autocorrelation function
+% which is also $T$-periodic, but more robust.
+
+% Fetch eigenvalue
+lambdaC = lambda1(b,d,0); omegaC = abs(imag(lambdaC)); T = 2*pi/omegaC;
+fprintf('Parameters: b = %f, d = %f\n',p(1),p(2));
+fprintf('Critical eigenvalue: lambda = %f + %fi\n',real(lambdaC),imag(lambdaC));
+fprintf('Predicted frequency: omega = %f\n',omegaC);
+fprintf('Predicted period: T = %f\n',T);
+
+% Perform a simulation for 10 periods.
+dt = 0.001;
+tSpan = [0:dt:10*T];
+[t,ZHist] = ode15s(rhs,tSpan,ZHist(end,:)',opts);
+
+% Plot u at x=0, as a function of $t$.
+uHist = ZHist(:,nHalf);
+figure; nHalf = nx/2; plot(t,uHist,'.-');
+xlabel('t'); ylabel('u(0,t)');
+
+% Use autocorrelation to extract the period (other was are also possible)
+autocorr = xcorr(uHist,uHist);
+[~,locs] = findpeaks(uHist);
+TSim = mean(diff(locs)*dt);
+fprintf('Estimated period from simulation: T = %f\n',TSim);
+
+%% Question 9
+% We now show the curves of eigenvalues. In addition to the eigenvalues as functions
+% of $k$, we also plot the curves as functions of the discrete wavenumbers $k_n =
+% n\pi/30$. The steady states is unstable to perturbations with wavelengths
+% $k_{5,6,7}$. The most unstable eigenmode has wavelength $k_6 = 6 \pi/L = \pi/5$.
+
+% Set parameters for Turing bifurcation
+p = [2 30]; b = p(1); d = p(2); 
+
+% Continuous and discrete wavenumbers
+k = linspace(-2,2,1000); L = 30; kn = [-19:19]*pi/L;
+
+% Plot dispersion relation (with inset around k=0);
+figure;
+subplot(1,2,1), hold on;
+plot(k,rel1(b,d,k),'DisplayName','Re \lambda_1');             plot(k,rel2(b,d,k),'DisplayName','Re \lambda_2');
+plot(k,imag1(b,d,k),'DisplayName','Im \lambda_1');            plot(k,imag2(b,d,k),'DisplayName','Im \lambda_2');
+plot(kn,rel1(b,d,kn),'.','DisplayName','Re \lambda_1(k_n)');  plot(kn,rel2(b,d,kn),'.','DisplayName','Re \lambda_2(k_n)');
+plot(kn,imag1(b,d,kn),'.','DisplayName','Im \lambda_1(k_n)'); plot(kn,imag2(b,d,kn),'.','DisplayName','Im \lambda_2(k_n)'); 
+hold off; grid on; ylim([-4 4]); xlabel('k'); 
+lgd = legend; lgd.Location = 'northoutside'; lgd.NumColumns = 3;
+
+subplot(1,2,2), hold on; 
+plot(k,rel1(b,d,k),'DisplayName','Re \lambda_1');             plot(k,rel2(b,d,k),'DisplayName','Re \lambda_2');
+plot(k,imag1(b,d,k),'DisplayName','Im \lambda_1');            plot(k,imag2(b,d,k),'DisplayName','Im \lambda_2');
+plot(kn,rel1(b,d,kn),'.','DisplayName','Re \lambda_1(k_n)');  plot(kn,rel2(b,d,kn),'.','DisplayName','Re \lambda_2(k_n)');
+plot(kn,imag1(b,d,kn),'.','DisplayName','Im \lambda_1(k_n)'); plot(kn,imag2(b,d,kn),'.','DisplayName','Im \lambda_2(k_n)'); 
+hold off; grid on; xlim([-1 1]); ylim([-1.5 1.5]); xlabel('k'); 
+lgd = legend; lgd.Location = 'northoutside'; lgd.NumColumns = 3;
+
+%% Question 10
+% Perturbing initial conditions with a spatially-periodic function with wavelength $
+% $6*\pi/L$, we obseve a Turing pattern emerging with $6$ peaks, as expected.
+
+% Instantiating periodic differentiation matrix
+nx = 1500; [x,~,Dxx] = PeriodicDiffMat([-L,L],nx); 
+
+% Initial condition (steady state + perburbation)
+e = ones(size(x)); z0 = [p(1)*e; e/p(1)]; 
+% z0 = z0 + 0.01*[sin(2*pi/10*x); sin(2*pi/20*x)];
+z0 = z0 + 0.0001*[cos(6*pi/L*x); cos(6*pi/L*x)];
+
+% Time step
+rhs = @(t,z) Schnakenberg(z,p,Dxx);
+jac = @(t,z) SchnakenbergJacobian(z,p,Dxx);
+opts = odeset('Jacobian',jac);
+tSpan = [0:0.1:300];
+[t,ZHist] = ode15s(rhs,tSpan,z0,opts);
+
+% Space-time plot
+PlotHistory(x,t,ZHist,p,[]);
+
+% Plot final state
+figure; title('Final state');
+plot(x,ZHist(end,1:nx),x,ZHist(end,nx+1:2*nx));
+xlabel('x'); legend({'U','V'});
+
+##### SOURCE END #####
+--></body></html>

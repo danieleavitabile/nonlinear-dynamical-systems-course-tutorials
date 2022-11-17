@@ -1,0 +1,520 @@
+\documentclass[a4paper]{siamart220329}
+
+\usepackage{damacros}
+
+% Theorem environment for questions: Small-caps header, italize body.
+\theoremstyle{plain}
+% \theoremheaderfont{\normalfont\sc}
+\theoremheaderfont{\normalfont\bf}
+\theorembodyfont{\normalfont}
+\theoremseparator{.}
+\theoremsymbol{}
+\newtheorem{question}{Question}
+
+\usepackage{listings}
+\definecolor{LightGrey}{rgb}{0.9629411,0.9629411,0.9629411}
+\definecolor{LighterGrey}{gray}{0.99}
+\definecolor{Mauve}{rgb}{0.58,0,0.82}
+\definecolor{Emerald}{rgb}{0.31, 0.78, 0.47}
+\definecolor{RoyalBlue}{rgb}{0.25, 0.41, 0.88}
+\definecolor{myGreen}{cmyk}{0.82,0.11,1,0.25}
+\lstset{
+    language=Matlab,
+    keywordstyle=\color{RoyalBlue},
+    basicstyle=\ttfamily,
+    %commentstyle=\color{Emerald}\scriptsize\ttfamily,
+    morekeywords={define,ifndef,endif},
+    commentstyle=\color{myGreen}\scriptsize\ttfamily,
+    %directivestyle=\color{Mauve}\scriptsize\ttfamily,
+    showspaces=false,            
+    showstringspaces=false,
+    stringstyle=\color{Mauve}\scriptsize\ttfamily,
+    numbers=left,
+    numberstyle=\scriptsize,
+    stepnumber=1,
+    numbersep=8pt,
+    showstringspaces=false,
+    breaklines=true,
+    frameround=ftff,
+    frame=lines,
+    backgroundcolor=\color{LightGrey}
+} 
+
+% Sets running headers as well as PDF title and authors
+\headers{Tutorial 1}{D. Avitabile}
+
+% Title. If the supplement option is on, then "Supplementary Material"
+% is automatically inserted before the title.
+\title{Nonlinear Dynamical Systems Part III \\ 
+  Dynamics in pattern-forming systems \\
+  Tutorial 1
+} 
+
+% Authors: full names plus addresses.
+\author{%
+  Daniele Avitabile%
+  \thanks{%
+    Vrije Universiteit Amsterdam,
+    Department of Mathematics,
+    Faculteit der Exacte Wetenschappen,
+    De Boelelaan 1081a,
+    1081 HV Amsterdam, The Netherlands.
+  \protect\\
+    Inria Sophia Antipolis M\'editerran\'ee Research Centre,
+    MathNeuro Team,
+    2004 route des Lucioles-Boîte Postale 93 06902,
+    Sophia Antipolis, Cedex, France.
+  \protect\\
+    (\email{d.avitabile@vu.nl}, \url{writemywebpage}).
+  }
+  % \and
+%   Paul T. Frank \thanks{Department of Applied Mathematics, Fictional University, Boise, ID 
+% (\email{ptfrank@fictional.edu}, \email{jesmith@fictional.edu}).}
+% \and Jane E. Smith\footnotemark[3]
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+  Themes of of this tutorial:
+  \begin{enumerate}
+    \item Approximation of differential operators via differentiation matrices.
+    \item Numerical time stepping for simple reaction--diffusion PDEs.
+    \item Computing and visualising spatiotemporal solutions.
+    \item Exploring dependence on initial conditions and control parameters.
+    \item Choosing solution measures for steady states of PDEs
+    \item Bifurcation diagrams for homogeneous steady states of PDEs
+  \end{enumerate}
+\end{abstract}
+
+\section{Introduction}
+In this tutorial we will work with the following Allen--Cahn PDE, subject to
+homogeneous Neumann (no-flux) boundary conditions
+\begin{equation}\label{eq:AC}
+  \begin{aligned}
+    & \partial_t u = \nu \partial_{xx}u + \lambda u + \alpha u^2 + \beta u^3 - \gamma
+    u^5, & & (x,t) \in (-L,L) \times \RSet_{>0}, \\
+	& \partial_x u(-L,t) = \partial_x u(L,t) = 0, && t \in \RSet_{\geq 0}, \\
+	& u(x,0) = \varphi(x), && x \in [-L,L].
+  \end{aligned}
+\end{equation}
+We shall derive and time step a set of $n$ coupled ODEs approximating \cref{eq:AC}, %in the form
+\begin{equation}
+  \dot U = F(U,p), \qquad U(0) = \{ \varphi(x_i) \}_{i=1}^n
+\end{equation}
+where $U(t) \in \RSet^n$, contains an approximation to $u(x,t)$ at $n$ grid points 
+$\{ x_i \}_{i=1}^n$ in $[-L,L]$, $p = (\nu,\lambda,\alpha,\beta,\gamma) \in \RSet^5$ is a
+vector of control parameters, and $F \colon \RSet^n \times \RSet^5 \to
+\RSet^n$. 
+
+\subsection{Differential operator and differentiation matrices} To make progress with the numerical simulation of
+\cref{eq:AC}, we should discuss how to approximate the second derivative on the
+right-hand side of the equation. 
+
+Given that the PDE contains a second-order spatial derivative, consider the second-order differential operator $\partial_{xx}$, which associates to
+a twice differentiable, real-valued function $v(x)$ defined on $[-L,L]$, its second
+derivative $v''(x)$
+\[
+  \begin{aligned}
+    \partial_{xx} \colon  C^2([-L,L]) & \to C^0([-L,L]), \\
+                       v           & \mapsto v''.
+  \end{aligned}
+\]
+Here are examples of how the operator $\partial_{x x}$ maps functions to their
+second derivatives
+\[
+  \begin{aligned}
+  & v(x) = x^3 & \mapsto \partial_{xx} v(x) = 6 x, & & x \in [-L,L] \\
+  & v(x) = e^x & \mapsto \partial_{xx} v(x) = e^x, & & x \in [-L,L] \\
+  \end{aligned}
+\]
+
+The operator $\partial_{x x}$ defined above is a useful gadget to interpret the PDE
+in \cref{eq:AC}: it is a linear operator from the function space $Y = C^2([-L,L])$
+to the function space $X = C^0([-L,L])$. You will be able to make progress in this
+course possibly without any background in Functional Analysis, which covers in detail the
+operator $\partial_{xx}$, its domain $X$ and codomain $Y$. It suffices to say that
+one way to make progress in the analysis of the PDE \cref{eq:AC} is to ``include" the
+boundary conditions in the operators, for instance by updating the definition of the
+domain $Y$
+as follows
+\[
+  Y = \{ v \in C^2([-L,L]) \colon v''(-L) = v''(L) = 0 \},
+\]
+and setting
+\begin{equation}\label{eq:dxx}
+  \partial_{xx} \colon  Y \to X, \quad v \mapsto v'',
+\end{equation}
+which now defines a linear operator ``including boundary conditions": the function
+$v$ on which $\partial_{xx}$ acts satisfies Neumann boundary conditions because $v
+\in Y$. In fact, it turns out that there are better choices than $Y= C^2$, and one
+must introduce Sobolev spaces and weak derivatives to have a satisfactory treatment
+of the PDE as a dynamical system. While we do not
+intend to study the functional analytic properties of the operator $\partial_{x x}$,
+we will be concerned with its approximation via \textit{differentiation matrices}, as
+we now discuss. For this purpose, it is fine to think of $\partial_{xx}$ as an
+operator defined on $C^2([-L,L])$.
+
+To fix the ideas, let us consider a first-order differential operator, acting on
+$2L$-periodic functions on $[-L,L]$ to $\RSet$:
+\begin{equation}\label{eq:dxPer}
+  \begin{aligned}
+    \partial_x \colon C^1_\textrm{per}([-L,L]) & \to C^0_\textrm{per}([-L,L]) \\
+                                  u     & \mapsto u'.
+  \end{aligned}
+\end{equation}
+Such operator does not arise in \cref{eq:AC}, and would be suitable for periodic (as
+opposed to Neumann) boundary conditions. We discuss it here as it is instructive to
+do so, and it helps us jump-start with differentiation matrices.
+
+Let us consider a set of grid points $\left\{x_{j}\right\}$ and the corresponding
+function values $\left\{u\left(x_{j}\right)\right\}$. Differentiation matrices use
+this data to provide an approximation to derivatives of $u$ at the nodes $\{x_j\}$.
+For instance, a differentiation matrix for the first derivative approximates
+$\left\{u^{\prime}\left(x_{j}\right)\right\}$, the first derivative $u^{\prime}$ of
+the function $u$ at the grid points.
+
+% To see this in action, let us consider for simplicity the case of a $2 L$-periodic
+% function $u:[-L, L] \rightarrow \mathbb{R}$. 
+On a periodic domain, we take gridpoints $x_{j}=$ $-L+h(j-1)$,  $h = 2L/n$, for
+$j=1, \ldots, n+1$. A common finite difference approximation for
+$u^{\prime}\left(x_{j}\right)$ is given by 
+\[
+u^{\prime}\left(x_{j}\right)
+= \frac{u\left(x_{j+1}\right)-u\left(x_{j-1}\right)}{2h} + O(h^2), \quad \text{as
+$h\to 0$}, \qquad
+u^{\prime}\left(x_{j}\right)
+\approx\frac{u\left(x_{j+1}\right)-u\left(x_{j-1}\right)}{2h}.
+\]
+If we collect
+the $\left\{u\left(x_{j}\right)\right\}$ in a vertical vector
+$U=\left\{U_{j}\right\}_{j=1}^{n}$, and take into account the periodicity of $u(x)$,
+we obtain
+\begin{equation}\label{eq:dxMat}
+\underbrace{
+\frac{1}{2 h}
+\begin{pmatrix}
+0 & 1 & & & -1 \\
+-1 & 0 & 1 & & \\
+& \ddots & \ddots & \ddots & \\
+& & -1 & 0 & 1 \\
+1 & & & -1 & 0
+\end{pmatrix}
+}_{D_x}
+\begin{pmatrix}
+U_{1} \\
+U_{2} \\
+\vdots \\
+U_{n-1} \\
+U_{n}
+\end{pmatrix}
+\approx
+\begin{pmatrix}
+u_{1}^{\prime} \\
+u_{2}^{\prime} \\
+\vdots \\
+u_{n-1}^{\prime} \\
+u_{n}^{\prime}
+\end{pmatrix}
+\end{equation}
+The matrix $D_x$ on the left-hand side is the differentiation matrix generated by the
+familiar second order centred finite difference formula to approximate $u^{\prime}$.
+Note that the condition $U_{n+1} = U_1$ (periodicity of the function) is not explicitly present in the
+discretisation, but the fact that $u(x) = u(x+2L)$ for all $x$ is implicitly
+accounted for, in the first and last row of the differentiation matrix. In addition, the
+vector $D_x U$ returns an approximation to a $2L$-periodic function, by design. This is
+similar in spirit to what happened for the operator $\partial_x$, which embedded
+boundary conditions in its domain $Y=C^1_\textrm{per}([-L,L])$. Also, note
+that the matrix we obtained is sparse. If we fix $L$ and increase $n$, we obtain a
+larger matrix (more grid points are involved) and standard error bounds on finite
+difference formulas ensure that we get a more accurate approximation to $u^{\prime}$.
+
+To understand in which sense the differentiation matrix $D_x$ in \cref{eq:dxMat} approximates the
+differential operator $\partial_x$ in \cref{eq:dxPer} compare the mappings
+\[
+  u \mapsto \partial_{x} u,  \qquad U \mapsto D_{x} U.
+\]
+The former is between the infinite-dimensional function spaces $C^1_\textrm{per}([-L,L])$
+and $C^0_\textrm{per}([-L,L])$. The latter is between finite-dimensional spaces, from $\RSet^n$
+to $\RSet^n$. If $U$ stores an $n$-dimensional approximation to $u$, we expect that
+the matrix-vector multiplication $D_x U$ produces an $n$-dimensional approximation to
+$\partial_x u$. The larger $n$, the closer $D_x U$ is to
+$\partial_x u$, in a sense that we will now discuss.
+
+\section{Tutorial questions}
+%\subsection*{Question 1: differentiation matrices with periodic BCs} 
+\begin{question}[Differentiation matrices with periodic BCs]
+For this question you do not have to write code, but rather understand and run
+code that is provided to you. Download and familiarise yourself with the 
+Matlab function \lstinline|PeriodicDiffMat| with interface
+\lstinputlisting[lastline=1,numbers=none]{../Solutions/Code/PeriodicDiffMat.m}
+which returns gridpoints, a differentiation matrix for $\partial_x$, and a
+differentiation matrix for $\partial_{x x}$ with periodic boundary conditions on the
+domain $[a,b)$. The
+function takes as input the boundary of the domain, via the vector
+\lstinline|xSpan| with components $a$ and $b$, and the number of gridpoints
+\lstinline|nx|.
+
+Run the code under Question 1 in \lstinline|driver.m| and see how the function is
+used to approximate the first
+and second derivative of the function $u(x) = e^{\cos x}$. The code for Question 1
+plots the analytical first and second derivatives, as well as their numerical
+approximations. 
+\end{question}
+
+% \subsection*{Question 2: convergence test for differentiation matrices} The plots in
+\begin{question}[Convergence test for differentiation matrices]
+  \label{question:convPer}
+question 1 give some ``visual" evidence that
+the differentiation matrices work as expected. We now work towards a more reliable and
+rigorous test. From standard numerical analysis results, it is known that the
+finite-difference approximations used in the differentiation matrices produce an
+$O(h^2)$ approximation or, equivalently, an $O(n^{-2})$ approximation. To test that
+our matrices are correct, we now produce numerical evidence of this fact.
+
+Understand and run the code in Question 2 of \lstinline|driver.m| question. The code
+produces numerical evidence that the differentiation matrices $D_x$ and $D_{xx}$
+satisfy the following error bounds
+\[
+  \begin{aligned}
+    & \max_{i=1}^n | (D_x U)_i - \partial_x u(x_i) | = O(n^{-2}), \\
+    & \max_{i=1}^n | (D_{x x} U)_i - \partial_{x x} u(x_i) | = O(n^{-2}),
+  \end{aligned}
+\]
+where $U \in \RSet^n$ is a vector with components $U_i = u(x_i)$, $u(x_i)$ is a
+function in $C^4_\textrm{per}([-L,L])$, $D_x, D_{x x} \in \RSet^{n
+\times n}$ are differentiation matrices. In the previous equations, $(D_x U)_i$
+denotes the $i$th component of the vector obtained by multiplying $D_x$ by $U$, and
+therefore containing an approximation to $\partial_x u(x_i)$. Similar considerations
+apply to $(D_{x x} U)_i$. Before proceeding, it is important that the solutions to
+Questions 1 and 2 are clear to you.
+\end{question}
+
+\begin{question}[Matrices with Neuman BCs] \label{question:NeumanDiff}
+We now start building code to simulate the PDE \cref{eq:AC}. A first step is coding a
+differentiation matrix $D_{x x}$ which encapsulates Neumann boundary conditions. Write a function
+named \lstinline|NeumannDiffMat| that produces grid points and differentiation matrix for
+$\partial_{x x}$ on the domain $[a,b]$ with Neumann Boundary conditions $\partial_x
+u(a) = \partial_x u(b) = 0$. You can take inspiration from \lstinline|PeriodicDiffMat|. Here are some
+important differences
+\begin{enumerate}
+  \item The $n$ gridpoints in the interval $[a,b]$ for Neumann boundary conditions
+    are given by
+    \[
+      x_i = a + h (i-1), \qquad h = \frac{b-a}{n-1}, \qquad i = 1,\ldots,n,
+    \]
+    that is, the grid includes both $a$ and $b$, unlike the periodic case.
+  \item The differentiation matrix with Neumann Boundary conditions now reads
+    \[
+      D_{x x} =
+\frac{1}{h^2}
+\begin{pmatrix}
+-2 & 2 & & &  \\
+1 & -2 & 1 & & \\
+& \ddots & \ddots & \ddots & \\
+& & 1 & -2 & 1 \\
+& & & 2 & -2 
+\end{pmatrix}.
+  \]
+To understand why the first and last rows of $D_{x x}$ encode Neumann boundary
+conditions, write down the centred finite difference formula for $\partial_{x x} u$
+at $x=a$,
+\[
+  \partial_{x x}u(a) = \frac{ u(a-h) -2u(a) + u(a+h)}{h^2} + O(h^2),
+\]
+realise that it involves the node $x = a-h$ which lies outside of the domain, and
+note that this node also occurs when one imposes the Neumann boundary condition
+\[
+  0 = \partial_{x}u(a) = \frac{ -u(a-h) + u(a+h)}{2h} + O(h^2).
+\]
+Combining the previous two expressions one obtains
+\[
+  \partial_{x x}u(a) = \frac{ -2u(a) + 2 u(a+h)}{h^2} + O(h^2),
+\]
+which is used in the first row of the matrix $D_{x x}$. A similar reasoning holds for the
+last row.
+\end{enumerate}
+
+Add code in \lstinline|driver.m| so as to test the function
+\lstinline|NeumannDiffMat|, proceeding as in Question 1: approximate the
+second derivative of a function that satisfies Neumann boundary conditions, for
+instance
+\[
+  u(x) = \cos(\pi x / 5), \qquad x \in [-5,5]
+\]
+Plot on the same graph $\partial_{x x} u$ and its approximation $D_{x x} U$.
+\end{question}
+
+\begin{question}[Convergence of differentiation matrices] Test the function you wrote
+  in \cref{question:NeumanDiff} by proceeding as in \cref{question:convPer}: produce
+  numerical evidence that the differentiation matrix $D_{x x}$
+satisfies the bound
+\[
+   \max_{i=1}^n | (D_{x x} U)_i - \partial_{x x} u(x_i) | = O(n^{-2}),
+\]
+for the function $u(x)$ you chose in Question 3.
+\end{question}
+
+\begin{question}[Approximate the RHS of \cref{eq:AC}] Using pen and paper, show that an approximating set of $n$
+ODEs for the PDE \cref{eq:AC} is given by
+
+\[
+  \begin{aligned}
+    \dot U_1 & = \nu \frac{2 U_2 - 2 U_1}{h^2} + N(U_1), \\
+    \dot U_{i} & = \nu \frac{U_{i+1} - 2 U_{i}+U_{i-1}}{h^2} + N(U_{i}), \qquad i = 2,\ldots,n-1 \\
+    \dot U_{n} & = \nu \frac{2 U_{n-1}-2U_n}{h^2} + N(U_{n}), \\
+  \end{aligned}
+\]
+with initial condition
+\[
+  U_i(0) = \varphi(x_i), \qquad i = 1,\ldots,n
+\]
+where $N$ is the $5$th order polynomial
+\[
+  N(u) = \lambda u + \alpha u^2 + \beta u^3 - \gamma u^5,
+\]
+and convince yourself that, in vectorial form, the system of ODEs can be written as
+\begin{equation}\label{eq:ODE}
+  \dot U = F(U,p), \qquad U(0) = \{ \varphi(x_i) \}_{i=1}^n
+\end{equation}
+where $U \in \RSet^n$, $p = (\nu,\lambda,\alpha,\beta,\gamma) \in \RSet^5$ is a
+vector containing all control parameters, and $F \colon \RSet^n \times \RSet^5 \to
+\RSet^n$ can be expressed in terms of $D_{xx}$ and $N$.
+\end{question}
+
+\begin{question}[Code the RHS of \cref{eq:AC}] Create a Matlab function \lstinline|AllenCahn| using the
+following prototype
+\lstinputlisting[lastline=1,numbers=none]{../Solutions/Code/AllenCahn.m}
+The function accepts as inputs the differentiation matrix $D_{x x} \in \RSet^{n
+\times n}$, a column vector $U \in \RSet^{n}$, a vector $p \in \RSet^5$, and returns
+in \lstinline|F| a column vector containing $F(U,p) \in \RSet^n$.
+\end{question}
+
+\begin{question}[Test the RHS of \cref{eq:AC}] Test the function \lstinline|AllenCahn|. To do this,
+notice that if $u(x) = \cos(\pi x/ 5)$, for $x \in [-5,5]$, then $u$ satisfies
+Neumann boundary conditions at $x=\pm 5$ and the right-hand side
+of the Allen--Cahn equation can be computed in closed form, 
+\[
+\nu \partial_{x x} u + \lambda u + \alpha u^2 + \beta u^3 - \gamma u^5 = v 
+\]
+where
+\[
+  v(x) = -(\pi / 5)^2\nu  \cos(\pi x / 5) + \lambda \cos(\pi x/ 5) + \alpha \cos^2(\pi
+  x / 5) + \beta \cos^3(\pi x /5) - \gamma \cos^5(\pi x /5).
+\]
+If \lstinline|AllenCahn| is implemented correctly, then it should return an
+approximation to the vector $V$ with components $V_i = v(x_i)$, provided its
+input vector $U$ has components $U_i = \cos(\pi x_i/ 5)$.
+%
+Verify that, if $n=100$, and $p = (1,-0.2,0,1,1)$ then
+\[
+  \| F(U,p) - V \|_\infty = \max_{i=1}^n | F_i(U,p) - V_i | \leq 2 \times 10^{-4}.
+\]
+\end{question}
+
+\begin{question}[Time step the PDE \cref{eq:AC}] \label{question:timeStep}
+  We are now ready to
+integrate the Allen--Cahn PDE \cref{eq:AC}. Time step the set of ODEs \cref{eq:ODE}
+with $n=100$ for $(x,t) \in [-5,5] \times [0,50]$ with parameters 
+$\nu = 1$, $\lambda =-0.2$, $\alpha=0$, $\beta=1$, $\gamma=1$, and initial
+condition\footnote{Strictly speaking, the initial condition should satisfy Neumann
+boundary conditions, and this one does not, because $\varphi'$ at the boundary is small,
+but not $0$, $\varphi'(\pm 5)\approx 7 \times 10^{-4}$. One can check numerically that this
+initial ``imperfection" is quickly cared for by the differentiation matrix, that
+enforces the boundary conditions $\partial_x u(\pm 5,t)=O(h^2)$ for all $t>0$.}
+$\varphi(x) = (\cosh(x))^{-2}$. You can use one of Matlab's in-built time steppers,
+for instance \lstinline|ode15s|. Plot the approximation $u(x,t)$ for $(x,t) \in
+[-5,5]\times [0,50]$. Observe the solution dynamics: you should see that the initial
+``peak" in the solution dissipates, and the solution approaches an equilibrium. Is
+the equilibrium spatially homogeneous or heterogeneous?
+\end{question}
+
+\begin{question}[Equilibria depend on the parameter $\lambda$] Repeat
+\cref{question:timeStep} with $\lambda = 0.1$. This experiment shows that the system attains a
+homogeneous equilibrium different from the one in \cref{question:timeStep}, hence equilibria depend
+on the parameter $\lambda$. Henceforth we will use $\lambda$ as our principal control
+parameter.
+\end{question}
+
+\begin{question}[Patterned equilibria]\label{question:patterns}
+Set $\lambda = 0.3$ and $t \in [0,200]$. Time step the problem with initial
+conditions $\varphi(x)= 0.2\cos(\pi x/ 5)$ and $\varphi(x)= 0.4\cos(\pi x/ 5)$.
+Produce numerical evidence that when $\lambda = 0.3$ and all other parameters are as
+in Question 8, the Allen--Cahn PDE \cref{eq:AC} supports 2 co-existing stable
+equilibria, one homogeneous, and one heterogeneous (patterned state). Such coexisting
+steady states are selected by slight variations in initial conditions.
+\end{question}
+
+\begin{question}[Solution measures] We have seen that the Allen--Cahn PDE
+supports both homogeneous and patterned steady states, and we aim to plot all of them
+on the same bifurcation diagram in the parameter $\lambda$. At this stage, we must choose a
+so-called \textit{solution measure}, that is, a scalar variable to put on the
+ordinates of the bifurcation diagram. 
+
+Let $u_*$ denote a steady state of the PDE defined on $[-L,L]$. When $u_*(x) \equiv
+C$, for some $C \in \RSet$ (homogeneous steady state) then a possible solution measure is
+\[
+  S_1(u_*) = C, 
+\]
+which is, however, not useful when $u_*$ depends on $x$ (patterned state). A popular solution
+measure applicable to both homogeneous and heterogeneous steady states is the scaled
+$L_2$-norm of $u_*$
+\[
+  S_2(u_*) = \|u_*\|_{L^2}= \bigg( \frac{1}{2L} \int_{-L}^L |u_*(x)|^2\, dx \bigg)^{1/2},
+\]
+which returns $|C|$ for homogeneous steady states $u_*(x) \equiv C$, and a
+positive real number for patterned states. Bifurcation diagrams are then drawn on
+the $(\lambda,S_1)$-plane, or the $(\lambda,S_2)$-plane (and sometimes the two
+diagrams are superimposed).
+
+Create a function with the following prototype
+\lstinputlisting[lastline=1, numbers=none]{../Solutions/Code/ComputeL2Norm.m}
+which takes a vector \lstinline|x| containing the gridpoints $x_i$, a vector
+\lstinline|U| with components $U_i \approx
+u(x_i)$, and returns an approximation to the scaled $L^2$-norm of $u$. Test your
+function in \lstinline|driver.m|. For instance, compute $S$ for $u_*(x) \equiv
+\pm 4$, and for a heterogeneous $u_*(x)$.
+\end{question}
+
+\begin{question}[Branches of homogeneous steady states] We can now study
+bifurcation diagrams of homogeneous steady states, in the parameter $\lambda$, with
+solution measure $S_1$. 
+
+The PDE \cref{eq:AC} depends on parameters $p =
+(\nu,\lambda,\alpha,\beta,\gamma)$ and we aim to vary $\lambda$ and fix all the
+others. Henceforth you should fix $\mu = 1$, $\alpha=0$, $\beta=1$, $\gamma =1$,
+unless otherwise stated.
+
+Use pen and paper to show that homogeneous steady states
+$u_*(x)\equiv C$ of the Allen--Cahn PDE \cref{eq:AC} are determined by an implicit
+equation
+\[
+  G(\lambda,C) = 0,
+\]
+where $G \colon \RSet^2 \to \RSet$ is a quintic polynomial in the variable C. We can now use the
+fucntion $G$ in two ways: 
+\begin{enumerate}
+ \item Fix $\lambda = \lambda_*$, and find $C$ such that
+   $G(\lambda_*,C) = 0$ to determine homogeneous equilibria of the Allen--Cahn PDE
+   for $\lambda = \lambda_*$. Show that, depending on the value $\lambda_*$, the
+   Allen--Cahn PDE admits $1$, $3$, or $5$ homogeneous equilibria. Do the equilibria
+   have any special property? Any symmetry?
+ \item 
+   Explain to a colleague (or convince yourself of) the following statement: \textit{the
+   locus of points $(\lambda,C)$
+   satisfying $G(\lambda,C) = 0$ is a bifurcation diagram of homogeneous equilibria
+   in the parameter $\lambda$, with solution measure $S_1$ (excluding solutions
+   stability).}
+   Use Matlab's command \lstinline|fimplicit| to plot a
+   bifurcation diagram of homogeneous steady states in $(\lambda,S_1)$-plane. How
+   many solution branches do you see? Do you see any bifurcation? If yes, can you
+   guess their type? Discuss this with colleagues. Also, seek confirmation of what you found in
+   Question 12.1.
+\end{enumerate}
+\end{question}
+
+% \bibliographystyle{siamplain}
+% \bibliography{references}
+\end{document}
