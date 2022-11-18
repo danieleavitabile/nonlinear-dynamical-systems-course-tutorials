@@ -16,7 +16,7 @@ clear all, close all, clc
 tau  = @(b,d,k) -(1+d)*k.^2+ (1-b^2);
 delta = @(b,d,k) d*k.^4+(b^2-d)*k.^2 + b^2;
 lambda1 = @(b,d,k) (tau(b,d,k)-sqrt(tau(b,d,k).^2 - 4*delta(b,d,k)))/2; 
-lambda2 = @(b,d,k) (tau(b,d,k)+sqrt(tau(b,d,k).^2 - 4*delta(b,d,k)))/2; 
+lambda2 = @(b,d,k) (tau(b,d,k)+sqrt(tau(b,d,k).^2 - 4*delta(b,d,k)))/2;
 
 rel1 = @(b,d,k) real(lambda1(b,d,k));
 rel2 = @(b,d,k) real(lambda2(b,d,k));

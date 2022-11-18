@@ -1,6 +1,5 @@
 function plotHandle = PlotHistory(x,t,U,p,parentHandle)
 
-  %% Extract number of components
   numComp = 2;
   nx = size(U,2)/2;
 
