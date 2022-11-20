@@ -107,8 +107,9 @@ tSpan = [0:dt:10*T];
 [t,ZHist] = ode15s(rhs,tSpan,ZHist(end,:)',opts);
 
 % Plot u at x=0, as a function of $t$.
+figure; nHalf = nx/2; 
 uHist = ZHist(:,nHalf);
-figure; nHalf = nx/2; plot(t,uHist,'.-');
+plot(t,uHist,'.-');
 xlabel('t'); ylabel('u(0,t)');
 
 % Use autocorrelation to extract the period (other was are also possible)
