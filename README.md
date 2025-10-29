@@ -1,6 +1,6 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7330169.svg)](https://doi.org/10.5281/zenodo.7330169)
 
-# Nonlinear Dynamical Systems Part 3 - Tutorial
+# Nonlinear Dynamical Systems at VU Amsterdam- Tutorial
 
 This repository contains tutorials for the course Nonlinear Dynamical Systems, taught at Vrije Universiteit Amsterdam.
 
